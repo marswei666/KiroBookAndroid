@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kiro Book</string>
+
+    <!-- Common -->
+    <string name="cancel">取消</string>
+    <string name="save">保存</string>
+    <string name="close">关闭</string>
+    <string name="delete">删除</string>
+    <string name="edit">编辑</string>
+    <string name="all">全部</string>
+    <string name="add">添加</string>
+    <string name="ok">好</string>
+    <string name="city">城市</string>
+    <string name="country">国家</string>
+
+    <!-- Tab Bar -->
+    <string name="tab_home">首页</string>
+    <string name="tab_map">地图</string>
+    <string name="tab_collection">收藏</string>
+    <string name="tab_profile">我的</string>
+
+    <!-- Home -->
+    <string name="home_check_ins">打卡</string>
+    <string name="home_no_entries">还没有打卡记录</string>
+    <string name="home_no_entries_hint">点击下方 + 开始记录你的第一个探店</string>
+
+    <!-- Add Entry -->
+    <string name="new_entry">新建打卡</string>
+    <string name="edit_entry">编辑打卡</string>
+    <string name="photos">照片</string>
+    <string name="category">类型</string>
+    <string name="location">位置</string>
+    <string name="address_placeholder">
+
+    </string>
+    <string name="locating">定位中…</string>
+    <string name="auto_locate">自动定位</string>
+    <string name="coordinate_obtained">已获取坐标，将显示在地图上</string>
+    <string name="name">名称</string>
+    <string name="shop_name_placeholder">店名</string>
+    <string name="visit_date">探访日期</string>
+    <string name="rating">评分</string>
+    <string name="my_notes">我的感受</string>
+    <string name="notes_placeholder">写下你的感受，只给自己看…</string>
+    <string name="save_failed">保存失败</string>
+
+    <!-- Entry Detail -->
+    <string name="delete_entry_title">删除这条打卡？</string>
+    <string name="delete_entry_message">此操作无法撤销，照片也会一并删除。</string>
+    <string name="my_notes_label">我的笔记</string>
+    <string name="mood">心情</string>
+
+    <!-- Collection -->
+    <string name="collection_title">收藏</string>
+    <string name="by_category">品类</string>
+    <string name="by_country">国家</string>
+    <string name="favorites">收藏</string>
+    <string name="empty_country_hint">打卡时填写城市/国家，就能在这里看到</string>
+    <string name="empty_favorites_hint">在打卡详情页点击书签，收藏你最爱的地方</string>
+    <string name="see_all">查看全部 %d 条</string>
+    <string name="entries_count">%d 个打卡</string>
+
+    <!-- Map -->
+    <string name="map_title">地图</string>
+    <string name="no_map_entries">暂无地图打卡</string>
+    <string name="no_map_entries_hint">打卡时开启定位，记录就会出现在地图上</string>
+
+    <!-- Profile -->
+    <string name="profile_title">我的手账</string>
+    <string name="profile_tagline">记录每一个值得被记住的角落</string>
+    <string name="total_check_ins">打卡总数</string>
+    <string name="category_breakdown">品类分布</string>
+    <string name="visited_countries">去过的国家 · %d</string>
+    <string name="storage">存储</string>
+    <string name="photo_storage">照片占用空间</string>
+    <string name="privacy_note">所有数据仅保存在本设备，不上传任何服务器</string>
+    <string name="export_backup">导出备份</string>
+    <string name="import_backup">导入备份</string>
+    <string name="about_wander">关于 Kiro Book</string>
+
+    <!-- Export -->
+    <string name="export_title">备份你的手账</string>
+    <string name="export_desc">导出 .json 文件，包含所有打卡记录\n可通过分享迁移到新设备</string>
+    <string name="export_entries_count">%d 条打卡记录</string>
+    <string name="export_photo_size">照片占用 %s</string>
+    <string name="export_button">导出备份</string>
+
+    <!-- Import -->
+    <string name="import_title">还原你的手账</string>
+    <string name="import_desc">选择之前导出的 .json 备份文件\n已有记录不会重复导入</string>
+    <string name="import_button">导入备份</string>
+    <string name="import_err_cannot_read">无法读取文件，请重试</string>
+    <string name="import_err_read_failed">文件读取失败</string>
+    <string name="import_err_invalid_format">格式不正确，请选择 Kiro Book 导出的备份文件</string>
+    <string name="import_no_new">没有新记录可导入</string>
+    <string name="import_success">成功导入 %d 条记录</string>
+
+    <!-- About -->
+    <string name="app_subtitle">全球探店电子手账</string>
+    <string name="version">版本 %s</string>
+    <string name="about_privacy1">所有数据仅保存在你的设备</string>
+    <string name="about_privacy2">完全离线可用</string>
+    <string name="about_privacy3">无账号，无追踪，无广告</string>
+    <string name="about">关于</string>
+
+    <!-- Icon Picker / Category Editor -->
+    <string name="add_category">新增类型</string>
+    <string name="edit_category">编辑类型</string>
+    <string name="category_name_label">类型名称</string>
+    <string name="category_name_placeholder">输入类型名称</string>
+    <string name="preview">预览</string>
+    <string name="select_icon">选择图标</string>
+    <string name="fullscreen_view">全屏查看</string>
+    <string name="drag_to_sort">长按拖拽可排序</string>
+
+    <!-- Icon Group Names -->
+    <string name="icon_group_food">餐饮</string>
+    <string name="icon_group_culture">文化</string>
+    <string name="icon_group_shopping">购物</string>
+    <string name="icon_group_leisure">休闲</string>
+    <string name="icon_group_places">场所</string>
+    <string name="icon_group_other">其他</string>
+
+    <!-- Place Categories -->
+    <string name="cat_cafe">咖啡馆</string>
+    <string name="cat_museum">博物馆</string>
+    <string name="cat_bookstore">书店</string>
+    <string name="cat_bar">酒吧</string>
+    <string name="cat_gallery">展览 / 美术馆</string>
+    <string name="cat_select_shop">买手店</string>
+    <string name="cat_restaurant">餐厅</string>
+    <string name="cat_other">其他</string>
+
+    <!-- Mood -->
+    <string name="mood_loved">很爱</string>
+    <string name="mood_relaxed">治愈</string>
+    <string name="mood_amazed">震撼</string>
+    <string name="mood_neutral">一般</string>
+    <string name="mood_tired">疲惫</string>
+
+    <!-- Weekdays -->
+    <string-array name="weekday_abbreviations">
+        <item>日</item>
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+    </string-array>
+</resources>

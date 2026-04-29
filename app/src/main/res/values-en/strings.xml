@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kiro Book</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="close">Close</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="all">All</string>
+    <string name="add">Add</string>
+    <string name="ok">OK</string>
+    <string name="city">City</string>
+    <string name="country">Country</string>
+    <string name="tab_home">Home</string>
+    <string name="tab_map">Map</string>
+    <string name="tab_collection">Collections</string>
+    <string name="tab_profile">Profile</string>
+    <string name="home_check_ins">Check-ins</string>
+    <string name="home_no_entries">No entries yet</string>
+    <string name="home_no_entries_hint">Tap + below to log your first spot</string>
+    <string name="new_entry">New Entry</string>
+    <string name="edit_entry">Edit Entry</string>
+    <string name="photos">Photos</string>
+    <string name="category">Category</string>
+    <string name="location">Location</string>
+    <string name="address_placeholder">Enter city or Google address</string>
+    <string name="locating">Locating…</string>
+    <string name="auto_locate">Auto-locate</string>
+    <string name="coordinate_obtained">Coordinates obtained, will show on map</string>
+    <string name="name">Name</string>
+    <string name="shop_name_placeholder">Shop name</string>
+    <string name="visit_date">Visit Date</string>
+    <string name="rating">Rating</string>
+    <string name="my_notes">My Notes</string>
+    <string name="notes_placeholder">Write your thoughts, just for you…</string>
+    <string name="save_failed">Save Failed</string>
+    <string name="delete_entry_title">Delete this entry?</string>
+    <string name="delete_entry_message">This action cannot be undone. Photos will also be deleted.</string>
+    <string name="my_notes_label">My Notes</string>
+    <string name="mood">Mood</string>
+    <string name="collection_title">Collections</string>
+    <string name="by_category">Category</string>
+    <string name="by_country">Country</string>
+    <string name="favorites">Favorites</string>
+    <string name="empty_country_hint">Fill in city/country when logging to see them here</string>
+    <string name="empty_favorites_hint">Bookmark entries to save your favorites</string>
+    <string name="see_all">See all %d</string>
+    <string name="entries_count">%d entries</string>
+    <string name="map_title">Map</string>
+    <string name="no_map_entries">No map entries</string>
+    <string name="no_map_entries_hint">Enable location when logging to show on map</string>
+    <string name="profile_title">My Journal</string>
+    <string name="profile_tagline">Capture every corner worth remembering</string>
+    <string name="total_check_ins">Total</string>
+    <string name="category_breakdown">By Category</string>
+    <string name="visited_countries">Countries · %d</string>
+    <string name="storage">Storage</string>
+    <string name="photo_storage">Photo Storage</string>
+    <string name="privacy_note">All data is stored on this device only</string>
+    <string name="export_backup">Export Backup</string>
+    <string name="import_backup">Import Backup</string>
+    <string name="about_wander">About Kiro Book</string>
+    <string name="export_title">Backup Your Journal</string>
+    <string name="export_desc">Export a .json file with all your entries\nTransfer via share to a new device</string>
+    <string name="export_entries_count">%d entries</string>
+    <string name="export_photo_size">Photos: %s</string>
+    <string name="export_button">Export</string>
+    <string name="import_title">Restore Your Journal</string>
+    <string name="import_desc">Select a previously exported .json backup\nExisting entries won\'t be duplicated</string>
+    <string name="import_button">Import</string>
+    <string name="import_err_cannot_read">Cannot read file, please try again</string>
+    <string name="import_err_read_failed">File read failed</string>
+    <string name="import_err_invalid_format">Invalid format, please select a Kiro Book backup</string>
+    <string name="import_no_new">No new entries to import</string>
+    <string name="import_success">Successfully imported %d entries</string>
+    <string name="app_subtitle">Global Shop Diary</string>
+    <string name="version">Version %s</string>
+    <string name="about_privacy1">All data stays on your device</string>
+    <string name="about_privacy2">Works fully offline</string>
+    <string name="about_privacy3">No account, no tracking, no ads</string>
+    <string name="about">About</string>
+    <string name="add_category">Add Category</string>
+    <string name="edit_category">Edit Category</string>
+    <string name="category_name_label">Category Name</string>
+    <string name="category_name_placeholder">Enter category name</string>
+    <string name="preview">Preview</string>
+    <string name="select_icon">Select Icon</string>
+    <string name="fullscreen_view">Full Screen</string>
+    <string name="drag_to_sort">Hold to reorder</string>
+    <string name="icon_group_food">Food &amp; Drink</string>
+    <string name="icon_group_culture">Culture</string>
+    <string name="icon_group_shopping">Shopping</string>
+    <string name="icon_group_leisure">Leisure</string>
+    <string name="icon_group_places">Places</string>
+    <string name="icon_group_other">Other</string>
+    <string name="cat_cafe">Café</string>
+    <string name="cat_museum">Museum</string>
+    <string name="cat_bookstore">Bookstore</string>
+    <string name="cat_bar">Bar</string>
+    <string name="cat_gallery">Gallery</string>
+    <string name="cat_select_shop">Select Shop</string>
+    <string name="cat_restaurant">Restaurant</string>
+    <string name="cat_other">Other</string>
+    <string name="mood_loved">Loved</string>
+    <string name="mood_relaxed">Relaxed</string>
+    <string name="mood_amazed">Amazed</string>
+    <string name="mood_neutral">Neutral</string>
+    <string name="mood_tired">Tired</string>
+    <string-array name="weekday_abbreviations">
+        <item>Su</item>
+        <item>Mo</item>
+        <item>Tu</item>
+        <item>We</item>
+        <item>Th</item>
+        <item>Fr</item>
+        <item>Sa</item>
+    </string-array>
+</resources>

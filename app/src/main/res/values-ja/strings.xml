@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kiro Book</string>
+    <string name="cancel">キャンセル</string>
+    <string name="save">保存</string>
+    <string name="close">閉じる</string>
+    <string name="delete">削除</string>
+    <string name="edit">編集</string>
+    <string name="all">すべて</string>
+    <string name="add">追加</string>
+    <string name="ok">OK</string>
+    <string name="city">都市</string>
+    <string name="country">国</string>
+    <string name="tab_home">ホーム</string>
+    <string name="tab_map">マップ</string>
+    <string name="tab_collection">コレクション</string>
+    <string name="tab_profile">プロフィール</string>
+    <string name="home_check_ins">チェックイン</string>
+    <string name="home_no_entries">まだ記録なし</string>
+    <string name="home_no_entries_hint">下の + をタップして最初のスポットを記録</string>
+    <string name="new_entry">新規記録</string>
+    <string name="edit_entry">記録を編集</string>
+    <string name="photos">写真</string>
+    <string name="category">カテゴリ</string>
+    <string name="location">場所</string>
+    <string name="address_placeholder">都市名またはGoogle住所を入力</string>
+    <string name="locating">位置取得中…</string>
+    <string name="auto_locate">自動定位</string>
+    <string name="coordinate_obtained">座標取得済み、地図に表示されます</string>
+    <string name="name">名前</string>
+    <string name="shop_name_placeholder">店舗名</string>
+    <string name="visit_date">訪問日</string>
+    <string name="rating">評価</string>
+    <string name="my_notes">メモ</string>
+    <string name="notes_placeholder">あなたの気持ちを書いてください…</string>
+    <string name="save_failed">保存失敗</string>
+    <string name="delete_entry_title">この記録を削除しますか？</string>
+    <string name="delete_entry_message">この操作は取り消せません。写真も削除されます。</string>
+    <string name="my_notes_label">メモ</string>
+    <string name="mood">気分</string>
+    <string name="collection_title">コレクション</string>
+    <string name="by_category">カテゴリ</string>
+    <string name="by_country">国</string>
+    <string name="favorites">お気に入り</string>
+    <string name="empty_country_hint">記録時に都市・国を入力するとここに表示されます</string>
+    <string name="empty_favorites_hint">詳細画面でブックマークしてお気に入りを保存</string>
+    <string name="see_all">すべて見る (%d)</string>
+    <string name="entries_count">%d 件</string>
+    <string name="map_title">マップ</string>
+    <string name="no_map_entries">地図の記録なし</string>
+    <string name="no_map_entries_hint">記録時に位置情報をオンにすると地図に表示されます</string>
+    <string name="profile_title">マイ手帳</string>
+    <string name="profile_tagline">記憶に残る場所を記録しよう</string>
+    <string name="total_check_ins">合計</string>
+    <string name="category_breakdown">カテゴリ別</string>
+    <string name="visited_countries">訪問国 · %d</string>
+    <string name="storage">ストレージ</string>
+    <string name="photo_storage">写真のストレージ</string>
+    <string name="privacy_note">すべてのデータはデバイスにのみ保存されます</string>
+    <string name="export_backup">バックアップを書き出す</string>
+    <string name="import_backup">バックアップを読み込む</string>
+    <string name="about_wander">Kiro Bookについて</string>
+    <string name="export_title">手帳をバックアップ</string>
+    <string name="export_desc">すべての記録を含む.jsonファイルを書き出します\n共有で新しいデバイスに転送</string>
+    <string name="export_entries_count">%d 件の記録</string>
+    <string name="export_photo_size">写真: %s</string>
+    <string name="export_button">書き出す</string>
+    <string name="import_title">手帳を復元</string>
+    <string name="import_desc">以前に書き出した.jsonバックアップを選択\n既存の記録は重複しません</string>
+    <string name="import_button">読み込む</string>
+    <string name="import_err_cannot_read">ファイルを読み取れません、もう一度お試しください</string>
+    <string name="import_err_read_failed">ファイル読み取り失敗</string>
+    <string name="import_err_invalid_format">形式が正しくありません。Kiro Bookのバックアップを選択してください</string>
+    <string name="import_no_new">新しい記録はありません</string>
+    <string name="import_success">%d 件の記録を読み込みました</string>
+    <string name="app_subtitle">グローバル探店ダイアリー</string>
+    <string name="version">バージョン %s</string>
+    <string name="about_privacy1">すべてのデータはデバイスに保存</string>
+    <string name="about_privacy2">完全オフライン対応</string>
+    <string name="about_privacy3">アカウント不要、追跡なし、広告なし</string>
+    <string name="about">について</string>
+    <string name="add_category">カテゴリを追加</string>
+    <string name="edit_category">カテゴリを編集</string>
+    <string name="category_name_label">カテゴリ名</string>
+    <string name="category_name_placeholder">カテゴリ名を入力</string>
+    <string name="preview">プレビュー</string>
+    <string name="select_icon">アイコンを選択</string>
+    <string name="fullscreen_view">全画面</string>
+    <string name="drag_to_sort">長押しで並べ替え</string>
+    <string name="icon_group_food">飲食</string>
+    <string name="icon_group_culture">文化</string>
+    <string name="icon_group_shopping">ショッピング</string>
+    <string name="icon_group_leisure">レジャー</string>
+    <string name="icon_group_places">場所</string>
+    <string name="icon_group_other">その他</string>
+    <string name="cat_cafe">カフェ</string>
+    <string name="cat_museum">博物館</string>
+    <string name="cat_bookstore">本屋</string>
+    <string name="cat_bar">バー</string>
+    <string name="cat_gallery">ギャラリー</string>
+    <string name="cat_select_shop">セレクトショップ</string>
+    <string name="cat_restaurant">レストラン</string>
+    <string name="cat_other">その他</string>
+    <string name="mood_loved">大好き</string>
+    <string name="mood_relaxed">癒し</string>
+    <string name="mood_amazed">感動</string>
+    <string name="mood_neutral">普通</string>
+    <string name="mood_tired">疲れた</string>
+    <string-array name="weekday_abbreviations">
+        <item>日</item>
+        <item>月</item>
+        <item>火</item>
+        <item>水</item>
+        <item>木</item>
+        <item>金</item>
+        <item>土</item>
+    </string-array>
+</resources>
