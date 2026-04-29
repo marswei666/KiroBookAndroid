@@ -1,4 +1,4 @@
-这是为环球探索爱好者，开发的一个电子记账手册, 使用MiMo模型辅助编程
+这是为环球探索爱好者，开发的一个电子记账手册，使用MiMo模型辅助编程
 
 📱 Google Play Support / 技术支持
 
@@ -22,11 +22,13 @@ Kiro Book 非常重视用户的隐私。 Kiro Book takes your privacy seriously.
 
 🛠 Tech Stack / 技术栈
 
-Language: Swift
+Language: Kotlin
 
-Framework: SwiftUI
+Framework: Jetpack Compose
 
-Target: iOS 17.0+
+Min SDK: 26 (Android 8.0)
+
+Target: 34 (Android 14)
 
 © 2026 Minami Studio. All rights reserved.
 
