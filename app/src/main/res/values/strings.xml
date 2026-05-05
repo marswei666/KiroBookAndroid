@@ -103,6 +103,7 @@
     <string name="about_privacy2">完全离线可用</string>
     <string name="about_privacy3">无账号，无追踪，无广告</string>
     <string name="about">关于</string>
+    <string name="save_to_local">保存到本地文件</string>
 
     <!-- Icon Picker / Category Editor -->
     <string name="add_category">新增类型</string>

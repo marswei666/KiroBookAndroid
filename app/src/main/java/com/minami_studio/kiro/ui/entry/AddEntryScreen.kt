@@ -44,9 +44,12 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.zIndex
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
@@ -91,6 +94,14 @@ fun AddEntryScreen(
     var addressQuery by remember { mutableStateOf("") }
     var isGeocoding by remember { mutableStateOf(false) }
     var isSaving by remember { mutableStateOf(false) }
+    var showNoCoordDialog by remember { mutableStateOf(false) }
+    val originalPhotos = remember { editEntry?.photoFilenames?.toSet() ?: emptySet() }
+
+    fun cancelAndCleanup() {
+        val newlyAdded = photos.filter { it !in originalPhotos }
+        if (newlyAdded.isNotEmpty()) PhotoRepository.delete(context, newlyAdded)
+        onDismiss()
+    }
 
     // 品类管理状态
     var showAddCategory by remember { mutableStateOf(false) }
@@ -157,7 +168,7 @@ fun AddEntryScreen(
                 langManager.s.cancel,
                 fontSize = 14.sp,
                 color = WanderMuted,
-                modifier = Modifier.clickable { onDismiss() }
+                modifier = Modifier.clickable { cancelAndCleanup() }
             )
             Text(
                 text = if (editEntry != null) langManager.s.editEntry else langManager.s.newEntry,
@@ -170,21 +181,25 @@ fun AddEntryScreen(
                     .clip(RoundedCornerShape(20.dp))
                     .background(if (name.isNotBlank() && city.isNotBlank() && country.isNotBlank()) WanderInk else WanderMuted)
                     .clickable(enabled = name.isNotBlank() && city.isNotBlank() && country.isNotBlank() && !isSaving) {
-                        isSaving = true
-                        val now = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
-                        val entry = Entry(
-                            id = editEntry?.id ?: java.util.UUID.randomUUID().toString(),
-                            name = name, category = if (selectedCustomCatId != null) PlaceCategory.other else selectedCategory, note = note,
-                            rating = rating, city = city, country = country,
-                            latitude = latitude, longitude = longitude,
-                            photoFilenames = photos,
-                            isFavorite = editEntry?.isFavorite ?: false,
-                            visitedAt = visitDate,
-                            createdAt = editEntry?.createdAt ?: now,
-                            customCategoryID = selectedCustomCatId
-                        )
-                        if (editEntry != null) entryStore.update(entry) else entryStore.add(entry)
-                        onDismiss()
+                        if (latitude == null) {
+                            showNoCoordDialog = true
+                        } else {
+                            isSaving = true
+                            val now = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+                            val entry = Entry(
+                                id = editEntry?.id ?: java.util.UUID.randomUUID().toString(),
+                                name = name, category = if (selectedCustomCatId != null) PlaceCategory.other else selectedCategory, note = note,
+                                rating = rating, city = city, country = country,
+                                latitude = latitude, longitude = longitude,
+                                photoFilenames = photos,
+                                isFavorite = editEntry?.isFavorite ?: false,
+                                visitedAt = visitDate,
+                                createdAt = editEntry?.createdAt ?: now,
+                                customCategoryID = selectedCustomCatId
+                            )
+                            if (editEntry != null) entryStore.update(entry) else entryStore.add(entry)
+                            onDismiss()
+                        }
                     }
                     .padding(horizontal = 16.dp, vertical = 7.dp)
             ) {
@@ -492,12 +507,14 @@ fun AddEntryScreen(
                 value = city,
                 onValueChange = { city = it },
                 placeholder = langManager.s.city,
+                required = true,
                 modifier = Modifier.weight(1f)
             )
             WanderTextField(
                 value = country,
                 onValueChange = { country = it },
                 placeholder = langManager.s.country,
+                required = true,
                 modifier = Modifier.weight(1f)
             )
             Row(
@@ -548,7 +565,7 @@ fun AddEntryScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         // 店名（与 iOS 位置区域内一致）
-        SectionLabel(langManager.s.shopName)
+        RequiredSectionLabel(langManager.s.shopName)
         Spacer(modifier = Modifier.height(8.dp))
         WanderTextField(
             value = name,
@@ -723,6 +740,35 @@ fun AddEntryScreen(
         )
     }
 
+    // ========== 未获取经纬度提示弹框 ==========
+    if (showNoCoordDialog) {
+        AlertDialog(
+            onDismissRequest = { showNoCoordDialog = false },
+            containerColor = WanderWarm,
+            shape = RoundedCornerShape(20.dp),
+            title = {
+                Text(
+                    langManager.s.noCoordTitle,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = WanderInk
+                )
+            },
+            text = {
+                Text(
+                    langManager.s.noCoordMessage,
+                    fontSize = 14.sp,
+                    color = WanderMuted
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = { showNoCoordDialog = false }) {
+                    Text(langManager.s.goBack, color = WanderAccent, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                }
+            }
+        )
+    }
+
 }
 
 // ========== SectionLabel（与 iOS sectionLabel 一致：11sp semibold tracking 1 uppercase muted） ==========
@@ -737,6 +783,25 @@ private fun SectionLabel(text: String) {
     )
 }
 
+@Composable
+private fun RequiredSectionLabel(text: String) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            text,
+            fontSize = 11.sp,
+            fontWeight = FontWeight.SemiBold,
+            letterSpacing = 1.sp,
+            color = WanderMuted
+        )
+        Text(
+            " *",
+            fontSize = 11.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = Color.Red
+        )
+    }
+}
+
 // ========== WanderTextField（与 iOS WanderTextFieldStyle 一致：白色背景，14dp 圆角，wanderBlush 边框） ==========
 @Composable
 private fun WanderTextField(
@@ -744,6 +809,7 @@ private fun WanderTextField(
     onValueChange: (String) -> Unit,
     placeholder: String,
     modifier: Modifier = Modifier,
+    required: Boolean = false,
     imeAction: ImeAction = ImeAction.Default,
     onDone: (() -> Unit)? = null
 ) {
@@ -755,7 +821,18 @@ private fun WanderTextField(
             .padding(horizontal = 16.dp, vertical = 13.dp)
     ) {
         if (value.isEmpty()) {
-            Text(placeholder, fontSize = 14.sp, color = WanderMuted)
+            if (required) {
+                Text(
+                    text = buildAnnotatedString {
+                        append(placeholder)
+                        withStyle(SpanStyle(color = Color.Red)) { append(" *") }
+                    },
+                    fontSize = 14.sp,
+                    color = WanderMuted
+                )
+            } else {
+                Text(placeholder, fontSize = 14.sp, color = WanderMuted)
+            }
         }
         BasicTextField(
             value = value,

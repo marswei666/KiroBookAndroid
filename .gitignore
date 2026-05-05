@@ -12,5 +12,8 @@ local.properties
 # Kotlin
 .kotlin/
 
+# Release artifacts
+app/release/
+
 # Claude
 .claude/

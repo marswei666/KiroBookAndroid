@@ -77,6 +77,7 @@ fun HomeScreen(
             .background(WanderWarm)
             .verticalScroll(rememberScrollState())
     ) {
+        Spacer(modifier = Modifier.statusBarsPadding())
         Spacer(modifier = Modifier.height(20.dp))
 
         // 品牌 + 语言切换

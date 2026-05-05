@@ -48,7 +48,7 @@ class Strings(val lang: AppLanguage) {
     val photos get() = pick("照片", "Photos", "写真", "사진", "照片")
     val category get() = pick("类型", "Category", "カテゴリ", "카테고리", "類型")
     val location get() = pick("位置", "Location", "場所", "위치", "位置")
-    val addressPlaceholder get() = pick("粘贴Google地址", "Paste Google address", "Google住所を貼り付け", "Google 주소 붙여넣기", "貼上Google地址")
+    val addressPlaceholder get() = pick("粘贴Google地址，搜索定位", "Paste Google address to search", "Google住所を貼り付けて検索", "Google 주소 붙여넣고 검색", "貼上Google地址，搜尋定位")
     val addressNotFound get() = pick("未找到该地址，请检查输入", "Address not found, please check your input", "住所が見つかりません、入力内容を確認してください", "주소를 찾을 수 없습니다, 입력을 확인하세요", "未找到該地址，請檢查輸入")
     val locating get() = pick("定位中...", "Locating...", "位置取得中...", "위치 확인 중...", "定位中...")
     val autoLocate get() = pick("自动定位", "Auto-locate", "自動定位", "자동 위치", "自動定位")
@@ -59,6 +59,9 @@ class Strings(val lang: AppLanguage) {
     val myNotes get() = pick("我的感受", "My Notes", "メモ", "메모", "我的感受")
     val notesPlaceholder get() = pick("写下你的感受，只给自己看...", "Write your thoughts, just for you...", "あなたの気持ちを書いてください...", "나만의 기록을 남겨보세요...", "寫下你的感受，只給自己看...")
     val saveFailed get() = pick("保存失败", "Save Failed", "保存失敗", "저장 실패", "儲存失敗")
+    val noCoordTitle get() = pick("未获取经纬度", "No Coordinates", "座標未取得", "좌표 없음", "未獲取經緯度")
+    val noCoordMessage get() = pick("请通过搜索定位或自动定位获取经纬度。", "Please use address search or auto-locate to get coordinates.", "住所検索または自動定位で座標を取得してください。", "주소 검색 또는 자동 위치로 좌표를 가져오세요.", "請透過搜尋定位或自動定位獲取經緯度。")
+    val goBack get() = pick("返回", "Go Back", "戻る", "돌아가기", "返回")
 
     // ── Entry Detail ──
     val deleteEntryTitle get() = pick("删除这条打卡？", "Delete this entry?", "この記録を削除しますか？", "이 기록을 삭제하시겠습니까?", "刪除這條打卡？")
@@ -97,14 +100,14 @@ class Strings(val lang: AppLanguage) {
 
     // ── Export ──
     val exportTitle get() = pick("备份你的手账", "Backup Your Journal", "手帳をバックアップ", "여행 노트 백업", "備份你的手帳")
-    val exportDesc get() = pick("导出 .json 文件，包含所有打卡记录\n可通过 AirDrop 或文件 App 迁移到新设备", "Export a .json file with all your entries\nTransfer via AirDrop or Files app", "すべての記録を含む.jsonファイルを書き出します\nAirDropまたはファイルAppで新しいデバイスに転送", "모든 기록이 담긴 .json 파일을 내보냅니다\nAirDrop 또는 파일 앱으로 새 기기에 전송", "匯出 .json 檔案，包含所有打卡記錄\n可透過 AirDrop 或檔案 App 遷移到新裝置")
+    val exportDesc get() = pick("导出 .zip 备份文件，包含所有打卡记录和照片\n可通过文件 App 迁移到新设备", "Export a .zip backup with all entries and photos\nTransfer via Files app to a new device", "すべての記録と写真を含む.zipバックアップを書き出します\nファイルAppで新しいデバイスに転送", "모든 기록과 사진이 담긴 .zip 백업을 내보냅니다\n파일 앱으로 새 기기에 전송", "匯出 .zip 備份檔案，包含所有打卡記錄和照片\n可透過檔案 App 遷移到新裝置")
     fun exportEntriesCount(count: Int) = pick("$count 条打卡记录", "$count entries", "$count 件の記録", "$count 개의 기록", "$count 條打卡記錄")
     fun exportPhotoSize(size: String) = pick("照片占用 $size", "Photos: $size", "写真: $size", "사진: $size", "照片佔用 $size")
     val exportButton get() = pick("导出备份", "Export", "書き出す", "내보내기", "匯出備份")
 
     // ── Import ──
     val importTitle get() = pick("还原你的手账", "Restore Your Journal", "手帳を復元", "여행 노트 복원", "還原你的手帳")
-    val importDesc get() = pick("选择之前导出的 .json 备份文件\n已有记录不会重复导入", "Select a previously exported .json backup\nExisting entries won't be duplicated", "以前に書き出した.jsonバックアップを選択\n既存の記録は重複しません", "이전에 내보낸 .json 백업 파일 선택\n기존 기록은 중복되지 않습니다", "選擇之前匯出的 .json 備份檔案\n已有記錄不會重複匯入")
+    val importDesc get() = pick("选择之前导出的 .zip 备份文件\n记录和照片都会一并还原，已有记录不会重复导入", "Select a previously exported .zip backup\nEntries and photos will be restored. Existing entries won't be duplicated", "以前に書き出した.zipバックアップを選択\n記録と写真が復元されます。既存の記録は重複しません", "이전에 내보낸 .zip 백업 파일 선택\n기록과 사진이 복원됩니다. 기존 기록은 중복되지 않습니다", "選擇之前匯出的 .zip 備份檔案\n記錄和照片都會一併還原，已有記錄不會重複匯入")
     val importButton get() = pick("导入备份", "Import", "読み込む", "가져오기", "匯入備份")
     val importErrCannotRead get() = pick("无法读取文件，请重试", "Cannot read file, please try again", "ファイルを読み取れません、もう一度お試しください", "파일을 읽을 수 없습니다. 다시 시도해주세요", "無法讀取檔案，請重試")
     val importErrReadFailed get() = pick("文件读取失败", "File read failed", "ファイル読み取り失敗", "파일 읽기 실패", "檔案讀取失敗")
@@ -122,6 +125,7 @@ class Strings(val lang: AppLanguage) {
     val traveler get() = pick("旅行者", "Traveler", "旅人", "여행자", "旅行者")
     val selectFile get() = pick("选择文件", "Select File", "ファイルを選択", "파일 선택", "選擇檔案")
     val shareBackup get() = pick("分享备份", "Share Backup", "バックアップを共有", "백업 공유", "分享備份")
+    val saveToLocal get() = pick("保存到本地", "Save to Device", "デバイスに保存", "기기에 저장", "儲存到本機")
 
     // ── Icon Picker / Category Editor ──
     val addCategory get() = pick("新增类型", "Add Category", "カテゴリを追加", "카테고리 추가", "新增類型")

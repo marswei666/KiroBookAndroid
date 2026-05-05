@@ -16,14 +16,14 @@ val localProperties = Properties().apply {
 
 android {
     namespace = "com.minami_studio.kiro"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.minami_studio.kiro"
         minSdk = 26
-        targetSdk = 34
-        versionCode = 2
-        versionName = "1.0.0"
+        targetSdk = 35
+        versionCode = 8
+        versionName = "1.0.4"
 
         // Google Maps API Key — 从 local.properties 读取
         val mapsApiKey = localProperties.getProperty("MAPS_API_KEY") ?: ""

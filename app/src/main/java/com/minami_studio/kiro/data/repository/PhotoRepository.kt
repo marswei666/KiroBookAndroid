@@ -6,9 +6,17 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import java.io.File
 import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import java.util.UUID
 
 object PhotoRepository {
+
+    private fun newPhotoFilename(): String {
+        val date = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
+        return "${date}_${UUID.randomUUID()}.jpg"
+    }
 
     private fun photosDir(context: Context): File {
         val base = context.getExternalFilesDir(null) ?: context.filesDir
@@ -19,7 +27,7 @@ object PhotoRepository {
 
     fun savePhoto(context: Context, uri: Uri): String? {
         return try {
-            val filename = "${UUID.randomUUID()}.jpg"
+            val filename = newPhotoFilename()
             val dest = File(photosDir(context), filename)
             context.contentResolver.openInputStream(uri)?.use { input ->
                 // 读取并压缩图片
@@ -38,7 +46,7 @@ object PhotoRepository {
 
     fun saveBitmap(context: Context, bitmap: Bitmap): String? {
         return try {
-            val filename = "${UUID.randomUUID()}.jpg"
+            val filename = newPhotoFilename()
             val dest = File(photosDir(context), filename)
             FileOutputStream(dest).use { out ->
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 85, out)

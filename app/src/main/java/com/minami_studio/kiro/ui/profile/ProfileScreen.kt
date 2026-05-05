@@ -107,12 +107,13 @@ fun ProfileScreen(
     ) { uri ->
         if (uri != null) {
             try {
-                val json = context.contentResolver.openInputStream(uri)?.bufferedReader()?.readText()
-                if (json != null) {
-                    val count = entryStore.importJson(json)
-                    importResult = if (count > 0) langManager.s.importSuccess(count) else langManager.s.importNoNew
-                } else {
-                    importResult = langManager.s.importErrCannotRead
+                val count = entryStore.importZip(uri)
+                profileName = prefs.getString("profile_name", "") ?: ""
+                tagline = prefs.getString("profile_tagline", "") ?: ""
+                importResult = when {
+                    count > 0 -> langManager.s.importSuccess(count)
+                    count == 0 -> langManager.s.importNoNew
+                    else -> langManager.s.importErrCannotRead
                 }
             } catch (e: Exception) {
                 importResult = "${langManager.s.importErrReadFailed}：${e.message}"
@@ -584,13 +585,16 @@ fun ProfileScreen(
                             .clip(RoundedCornerShape(16.dp))
                             .background(WanderInk)
                             .clickable {
-                                val json = entryStore.exportJson()
-                                val intent = Intent(Intent.ACTION_SEND).apply {
-                                    type = "application/json"
-                                    putExtra(Intent.EXTRA_TEXT, json)
-                                    putExtra(Intent.EXTRA_SUBJECT, "WanderLog Backup")
+                                val zipUri = entryStore.exportZip()
+                                if (zipUri != null) {
+                                    val intent = Intent(Intent.ACTION_SEND).apply {
+                                        type = "application/zip"
+                                        putExtra(Intent.EXTRA_STREAM, zipUri)
+                                        putExtra(Intent.EXTRA_SUBJECT, "Kiro Book Backup")
+                                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                    }
+                                    context.startActivity(Intent.createChooser(intent, langManager.s.shareBackup))
                                 }
-                                context.startActivity(Intent.createChooser(intent, langManager.s.shareBackup))
                                 showExportSheet = false
                             }
                             .padding(vertical = 16.dp),
@@ -669,7 +673,7 @@ fun ProfileScreen(
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(16.dp))
                             .background(WanderInk)
-                            .clickable { importPicker.launch("application/json") }
+                            .clickable { importPicker.launch("*/*") }
                             .padding(vertical = 16.dp),
                         contentAlignment = Alignment.Center
                     ) {

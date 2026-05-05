@@ -10,6 +10,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,7 +43,11 @@ fun WanderCalendar(
     modifier: Modifier = Modifier,
     onDayEntriesClick: (List<Entry>) -> Unit = {}
 ) {
-    var displayMonth by remember { mutableStateOf(YearMonth.now()) }
+    val yearMonthSaver = Saver<YearMonth, String>(
+        save = { it.toString() },
+        restore = { YearMonth.parse(it) }
+    )
+    var displayMonth by rememberSaveable(stateSaver = yearMonthSaver) { mutableStateOf(YearMonth.now()) }
     val today = LocalDate.now()
 
     val entriesByDay = remember(entries, displayMonth) {
@@ -64,21 +70,26 @@ fun WanderCalendar(
     }
 
     var dragOffset by remember { mutableFloatStateOf(0f) }
+    var monthSwitched by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
             .pointerInput(Unit) {
                 detectHorizontalDragGestures(
-                    onDragEnd = { dragOffset = 0f },
-                    onDragCancel = { dragOffset = 0f },
+                    onDragEnd = { dragOffset = 0f; monthSwitched = false },
+                    onDragCancel = { dragOffset = 0f; monthSwitched = false },
                     onHorizontalDrag = { _, delta ->
-                        dragOffset += delta
-                        if (dragOffset > 80) {
-                            displayMonth = displayMonth.minusMonths(1)
-                            dragOffset = 0f
-                        } else if (dragOffset < -80) {
-                            displayMonth = displayMonth.plusMonths(1)
-                            dragOffset = 0f
+                        if (!monthSwitched) {
+                            dragOffset += delta
+                            if (dragOffset > 80) {
+                                displayMonth = displayMonth.minusMonths(1)
+                                dragOffset = 0f
+                                monthSwitched = true
+                            } else if (dragOffset < -80) {
+                                displayMonth = displayMonth.plusMonths(1)
+                                dragOffset = 0f
+                                monthSwitched = true
+                            }
                         }
                     }
                 )

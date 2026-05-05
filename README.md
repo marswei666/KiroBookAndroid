@@ -31,6 +31,6 @@ Framework: Jetpack Compose
 
 Min SDK: 26 (Android 8.0)
 
-Target: 34 (Android 14)
+Target: 35 (Android 15)
 
 © 2026 Minami Studio. All rights reserved.
