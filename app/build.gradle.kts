@@ -22,8 +22,8 @@ android {
         applicationId = "com.minami_studio.kiro"
         minSdk = 26
         targetSdk = 35
-        versionCode = 8
-        versionName = "1.0.4"
+        versionCode = 9
+        versionName = "1.0.5"
 
         // Google Maps API Key — 从 local.properties 读取
         val mapsApiKey = localProperties.getProperty("MAPS_API_KEY") ?: ""
