@@ -7,6 +7,7 @@ import com.minami_studio.kiro.data.model.CustomCategory
 import com.minami_studio.kiro.data.model.Entry
 import com.minami_studio.kiro.data.model.PlaceCategory
 import com.minami_studio.kiro.data.repository.PhotoRepository
+import com.minami_studio.kiro.data.sync.CloudSyncService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,6 +29,7 @@ class EntryStore(private val context: Context) {
 
     private val entriesFile = File(context.filesDir, "entries.json")
     private val categoriesFile = File(context.filesDir, "customCategories.json")
+    private val cloudSyncService = CloudSyncService(context)
 
     private val _entries = MutableStateFlow<List<Entry>>(emptyList())
     val entries: StateFlow<List<Entry>> = _entries.asStateFlow()
@@ -51,6 +53,7 @@ class EntryStore(private val context: Context) {
     fun add(entry: Entry) {
         _entries.value = listOf(entry) + _entries.value
         saveEntries()
+        triggerCloudSync()
     }
 
     fun update(entry: Entry) {
@@ -62,6 +65,13 @@ class EntryStore(private val context: Context) {
         PhotoRepository.delete(context, entry.photoFilenames)
         _entries.value = _entries.value.filter { it.id != entry.id }
         saveEntries()
+        triggerCloudSync()
+    }
+
+    private fun triggerCloudSync() {
+        val prefs = context.getSharedPreferences("app_prefs", android.content.Context.MODE_PRIVATE)
+        val userName = prefs.getString("profile_name", "") ?: ""
+        cloudSyncService.syncStats(_entries.value, userName)
     }
 
     // MARK: - CustomCategory CRUD
