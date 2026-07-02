@@ -17,7 +17,7 @@ GitHub Issues: https://github.com/marswei666/WanderLogAndroid/issues
 
 Kiro Book 非常重视用户的隐私。 Kiro Book takes your privacy seriously.
 
-数据收集：本应用不会收集、存储或上传任何个人身份信息或用户数据。 Data Collection: We do not collect, store, or share any personal identifiable information or user data.
+数据收集：本应用不会收集、存储或上传任何个人照片信息，只统计打卡数量。 Data Collection: This app does not collect, store, or upload any personal photos. It only tracks the number of check-ins.
 
 本地存储：所有的设置和计时偏好均仅存储在您的设备本地。 Local Storage: All app settings and preferences are stored locally on your device.
 
