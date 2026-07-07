@@ -36,6 +36,7 @@ play-services-location = { group = "com.google.android.gms", name = "play-servic
 maps-compose = { group = "com.google.maps.android", name = "maps-compose", version.ref = "mapsCompose" }
 androidx-exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifinterface" }
 androidx-documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "documentfile" }
+amap3dmap-location-search = { group = "com.amap.api", name = "3dmap-location-search", version = "latest.integration" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

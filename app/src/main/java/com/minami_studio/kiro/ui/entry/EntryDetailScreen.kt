@@ -28,12 +28,14 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.minami_studio.kiro.util.RegionDetector
 import com.minami_studio.kiro.data.model.Entry
 import com.minami_studio.kiro.data.model.PlaceCategory
 import com.minami_studio.kiro.data.repository.PhotoRepository
@@ -320,6 +322,8 @@ fun EntryDetailScreen(
 
                 // 迷你地图
                 if (entry.hasLocation) {
+                    val isChina = remember { RegionDetector.isChina(context) }
+
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Default.Map, null, tint = WanderMuted, modifier = Modifier.size(13.dp))
                         Spacer(modifier = Modifier.width(4.dp))
@@ -333,29 +337,32 @@ fun EntryDetailScreen(
                     }
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    val latLng = LatLng(entry.latitude!!, entry.longitude!!)
-                    val cameraPositionState = rememberCameraPositionState {
-                        position = CameraPosition.fromLatLngZoom(latLng, 15f)
-                    }
-
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(160.dp)
                             .clip(RoundedCornerShape(16.dp))
-                            .clickable { onFullMap(entry.latitude, entry.longitude) }
+                            .clickable { onFullMap(entry.latitude!!, entry.longitude!!) }
                     ) {
-                        GoogleMap(
-                            modifier = Modifier.fillMaxSize(),
-                            cameraPositionState = cameraPositionState,
-                            uiSettings = com.google.maps.android.compose.MapUiSettings(
-                                zoomControlsEnabled = false,
-                                scrollGesturesEnabled = false
-                            )
-                        ) {
-                            val iconForMarker = resolveIcon(entryStore.categoryIcon(entry)) ?: entry.category.materialIcon
-                            val markerIcon = com.minami_studio.kiro.ui.map.rememberCategoryMarker(iconForMarker)
-                            Marker(state = MarkerState(position = latLng), title = entry.name, icon = markerIcon)
+                        if (isChina) {
+                            MiniAmapView(entry, entryStore)
+                        } else {
+                            val latLng = LatLng(entry.latitude!!, entry.longitude!!)
+                            val cameraPositionState = rememberCameraPositionState {
+                                position = CameraPosition.fromLatLngZoom(latLng, 15f)
+                            }
+                            GoogleMap(
+                                modifier = Modifier.fillMaxSize(),
+                                cameraPositionState = cameraPositionState,
+                                uiSettings = com.google.maps.android.compose.MapUiSettings(
+                                    zoomControlsEnabled = false,
+                                    scrollGesturesEnabled = false
+                                )
+                            ) {
+                                val iconForMarker = resolveIcon(entryStore.categoryIcon(entry)) ?: entry.category.materialIcon
+                                val markerIcon = com.minami_studio.kiro.ui.map.rememberGoogleCategoryMarker(iconForMarker)
+                                Marker(state = MarkerState(position = latLng), title = entry.name, icon = markerIcon)
+                            }
                         }
                         // 右下角全屏按钮
                         Row(
@@ -364,7 +371,7 @@ fun EntryDetailScreen(
                                 .padding(10.dp)
                                 .clip(RoundedCornerShape(20.dp))
                                 .background(Color.Black.copy(alpha = 0.45f))
-                                .clickable { onFullMap(entry.latitude, entry.longitude) }
+                                .clickable { onFullMap(entry.latitude!!, entry.longitude!!) }
                                 .padding(horizontal = 10.dp, vertical = 5.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(4.dp)
@@ -471,4 +478,43 @@ fun EntryDetailScreen(
             }
         )
     }
+}
+
+@Composable
+private fun MiniAmapView(
+    entry: com.minami_studio.kiro.data.model.Entry,
+    entryStore: com.minami_studio.kiro.data.store.EntryStore
+) {
+    val context = LocalContext.current
+    val iconForMarker = resolveIcon(entryStore.categoryIcon(entry)) ?: entry.category.materialIcon
+    val markerBitmap = com.minami_studio.kiro.ui.map.rememberCategoryMarkerBitmap(iconForMarker)
+
+    AndroidView(
+        factory = { ctx ->
+            com.amap.api.maps.MapView(ctx).apply {
+                onCreate(null)
+                map?.let { amap ->
+                    amap.uiSettings.isZoomControlsEnabled = false
+                    amap.uiSettings.isScrollGesturesEnabled = false
+
+                    val position = com.amap.api.maps.model.LatLng(entry.latitude!!, entry.longitude!!)
+                    amap.moveCamera(
+                        com.amap.api.maps.CameraUpdateFactory.newLatLngZoom(position, 15f)
+                    )
+
+                    val amapIcon = com.amap.api.maps.model.BitmapDescriptorFactory.fromBitmap(markerBitmap)
+                    amap.addMarker(
+                        com.amap.api.maps.model.MarkerOptions()
+                            .position(position)
+                            .title(entry.name)
+                            .icon(amapIcon)
+                            .anchor(0.5f, 1.0f)
+                    )
+                }
+            }
+        },
+        modifier = Modifier.fillMaxSize(),
+        onReset = null,
+        onRelease = { it.onDestroy() }
+    )
 }

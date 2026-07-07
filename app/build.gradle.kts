@@ -19,11 +19,12 @@ android {
     compileSdk = 35
 
     defaultConfig {
+        manifestPlaceholders += mapOf()
         applicationId = "com.minami_studio.kiro"
         minSdk = 26
         targetSdk = 35
-        versionCode = 9
-        versionName = "1.0.5"
+        versionCode = 11
+        versionName = "1.0.7"
 
         // Google Maps API Key — 从 local.properties 读取
         val mapsApiKey = localProperties.getProperty("MAPS_API_KEY") ?: ""
@@ -32,6 +33,18 @@ android {
         // Google Translate API Key — 从 local.properties 读取
         val translateApiKey = localProperties.getProperty("TRANSLATE_API_KEY") ?: ""
         buildConfigField("String", "TRANSLATE_API_KEY", "\"$translateApiKey\"")
+
+        // AMap API Key — 从 local.properties 读取
+        val amapApiKey = localProperties.getProperty("AMAP_API_KEY") ?: ""
+        manifestPlaceholders["AMAP_API_KEY"] = amapApiKey
+        val amapWebKey = localProperties.getProperty("AMAP_WEB_KEY") ?: ""
+        buildConfigField("String", "AMAP_WEB_KEY", "\"$amapWebKey\"")
+
+        // Baidu Translate API Key — 从 local.properties 读取
+        val baiduAppId = localProperties.getProperty("BAIDU_TRANSLATE_APPID") ?: ""
+        buildConfigField("String", "BAIDU_TRANSLATE_APPID", "\"$baiduAppId\"")
+        val baiduSecret = localProperties.getProperty("BAIDU_TRANSLATE_SECRET") ?: ""
+        buildConfigField("String", "BAIDU_TRANSLATE_SECRET", "\"$baiduSecret\"")
     }
 
     signingConfigs {
@@ -40,6 +53,7 @@ android {
             storePassword = localProperties.getProperty("KEYSTORE_PASSWORD") ?: ""
             keyAlias = localProperties.getProperty("KEY_ALIAS") ?: ""
             keyPassword = localProperties.getProperty("KEY_PASSWORD") ?: ""
+            storeType = "PKCS12"
         }
     }
 
@@ -95,6 +109,8 @@ dependencies {
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
     implementation(libs.maps.compose)
+
+    implementation(libs.amap3dmap.location.search)
 
     implementation(libs.androidx.exifinterface)
     implementation(libs.androidx.documentfile)

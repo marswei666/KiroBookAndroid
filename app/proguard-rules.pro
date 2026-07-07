@@ -6,3 +6,10 @@
 -keep,includedescriptorclasses class com.minami_studio.kiro.**$$serializer { *; }
 -keepclassmembers class com.minami_studio.kiro.** { *** Companion; }
 -keepclasseswithmembers class com.minami_studio.kiro.** { kotlinx.serialization.KSerializer serializer(...); }
+
+# AMap SDK
+-keep class com.amap.api.** { *; }
+-keep class com.autonavi.** { *; }
+-dontwarn com.amap.api.**
+-dontwarn com.autonavi.**
+-dontwarn com.amap.ams.**

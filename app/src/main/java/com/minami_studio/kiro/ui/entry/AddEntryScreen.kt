@@ -139,11 +139,10 @@ fun AddEntryScreen(
         if (granted) {
             isLocating = true
             scope.launch {
-                val location = LocationRepository.getCurrentLocation(context)
-                if (location != null) {
-                    latitude = location.latitude
-                    longitude = location.longitude
-                    val geo = LocationRepository.geocode(context, location.latitude, location.longitude, langManager.langCode)
+                val latLng = LocationRepository.getCurrentLatLng(context)
+                if (latLng != null) {
+                    latitude = latLng.first; longitude = latLng.second
+                    val geo = LocationRepository.geocode(context, latLng.first, latLng.second, langManager.langCode)
                     if (geo != null) { city = geo.city; country = geo.country }
                 }
                 isLocating = false
@@ -527,10 +526,10 @@ fun AddEntryScreen(
                     if (hasPerm) {
                         isLocating = true
                         scope.launch {
-                            val loc = LocationRepository.getCurrentLocation(context)
-                            if (loc != null) {
-                                latitude = loc.latitude; longitude = loc.longitude
-                                val geo = LocationRepository.geocode(context, loc.latitude, loc.longitude, langManager.langCode)
+                            val latLng = LocationRepository.getCurrentLatLng(context)
+                            if (latLng != null) {
+                                latitude = latLng.first; longitude = latLng.second
+                                val geo = LocationRepository.geocode(context, latLng.first, latLng.second, langManager.langCode)
                                 if (geo != null) { city = geo.city; country = geo.country }
                             }
                             isLocating = false
@@ -683,8 +682,9 @@ fun AddEntryScreen(
                 selectedCustomCatId = cat.id
                 showAddCategory = false
                 scope.launch {
+                    val isChina = com.minami_studio.kiro.util.RegionDetector.isChina(context)
                     val translations = com.minami_studio.kiro.util.TranslationService
-                        .translateToAllLanguages(trimmed, langManager.langCode)
+                        .translateToAllLanguages(trimmed, langManager.langCode, isChina)
                     if (translations.size > 1) {
                         entryStore.updateCustomCategory(cat.copy(localizedNames = translations))
                     }

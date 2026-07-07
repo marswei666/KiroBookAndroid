@@ -8,6 +8,7 @@ import android.util.Log
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
+import com.minami_studio.kiro.util.RegionDetector
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
@@ -28,6 +29,45 @@ object LocationRepository {
 
     private const val TAG = "LocationRepository"
 
+    var amapWebKey: String = ""
+
+    private const val PI = 3.1415926535897932384626
+    private const val A = 6378245.0
+    private const val EE = 0.00669342162296594323
+
+    private fun outOfChina(lat: Double, lng: Double): Boolean {
+        return lng < 72.004 || lng > 137.8347 || lat < 0.8293 || lat > 55.8271
+    }
+
+    private fun transformLat(x: Double, y: Double): Double {
+        var ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x))
+        ret += (20.0 * Math.sin(6.0 * x * PI) + 20.0 * Math.sin(2.0 * x * PI)) * 2.0 / 3.0
+        ret += (20.0 * Math.sin(y * PI) + 40.0 * Math.sin(y / 3.0 * PI)) * 2.0 / 3.0
+        ret += (160.0 * Math.sin(y / 12.0 * PI) + 320.0 * Math.sin(y * PI / 30.0)) * 2.0 / 3.0
+        return ret
+    }
+
+    private fun transformLng(x: Double, y: Double): Double {
+        var ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x))
+        ret += (20.0 * Math.sin(6.0 * x * PI) + 20.0 * Math.sin(2.0 * x * PI)) * 2.0 / 3.0
+        ret += (20.0 * Math.sin(x * PI) + 40.0 * Math.sin(x / 3.0 * PI)) * 2.0 / 3.0
+        ret += (150.0 * Math.sin(x / 12.0 * PI) + 300.0 * Math.sin(x / 30.0 * PI)) * 2.0 / 3.0
+        return ret
+    }
+
+    internal fun wgs84ToGcj02(lat: Double, lng: Double): Pair<Double, Double> {
+        if (outOfChina(lat, lng)) return Pair(lat, lng)
+        var dLat = transformLat(lng - 105.0, lat - 35.0)
+        var dLng = transformLng(lng - 105.0, lat - 35.0)
+        val radLat = lat / 180.0 * PI
+        var magic = Math.sin(radLat)
+        magic = 1 - EE * magic * magic
+        val sqrtMagic = Math.sqrt(magic)
+        dLat = (dLat * 180.0) / ((A * (1 - EE)) / (magic * sqrtMagic) * PI)
+        dLng = (dLng * 180.0) / (A / sqrtMagic * Math.cos(radLat) * PI)
+        return Pair(lat + dLat, lng + dLng)
+    }
+
     /** AppLanguage.code → Google API language 参数 */
     private fun googleLangCode(appLangCode: String): String = when (appLangCode) {
         "zh-Hans" -> "zh-CN"
@@ -42,7 +82,7 @@ object LocationRepository {
         val client = LocationServices.getFusedLocationProviderClient(context)
         return suspendCancellableCoroutine { cont ->
             val cts = CancellationTokenSource()
-            client.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY, cts.token)
+            client.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, cts.token)
                 .addOnSuccessListener { location ->
                     cont.resume(location)
                 }
@@ -53,12 +93,24 @@ object LocationRepository {
         }
     }
 
-    suspend fun geocode(context: Context, latitude: Double, longitude: Double, langCode: String = "en"): GeoResult? {
-        // 先试 Google Geocoding API（更准）
-        val apiResult = reverseGeocodeByGoogleApi(context, latitude, longitude, langCode)
-        if (apiResult != null) return apiResult
+    suspend fun getCurrentLatLng(context: Context): Pair<Double, Double>? {
+        val location = getCurrentLocation(context) ?: return null
+        return if (RegionDetector.isChina(context)) {
+            wgs84ToGcj02(location.latitude, location.longitude)
+        } else {
+            Pair(location.latitude, location.longitude)
+        }
+    }
 
-        // 降级到 Android Geocoder
+    suspend fun geocode(context: Context, latitude: Double, longitude: Double, langCode: String = "en"): GeoResult? {
+        if (RegionDetector.isChina(context)) {
+            val apiResult = reverseGeocodeByAmapApi(context, latitude, longitude, langCode)
+            if (apiResult != null) return apiResult
+        } else {
+            val apiResult = reverseGeocodeByGoogleApi(context, latitude, longitude, langCode)
+            if (apiResult != null) return apiResult
+        }
+
         return try {
             val locale = Locale(googleLangCode(langCode))
             val geocoder = Geocoder(context, locale)
@@ -171,6 +223,8 @@ object LocationRepository {
         val trimmed = query.trim()
         Log.d(TAG, "searchAddress: $trimmed")
 
+        val isChina = RegionDetector.isChina(context)
+
         // 1. 纯坐标：34.0522,-118.2437
         val coordRegex = Regex("""^(-?\d+\.?\d*)\s*[,，]\s*(-?\d+\.?\d*)$""")
         coordRegex.matchEntire(trimmed)?.let { match ->
@@ -206,14 +260,16 @@ object LocationRepository {
             placeRegex.find(trimmed)?.let { match ->
                 val placeName = android.net.Uri.decode(match.groupValues[1]).replace("+", " ")
                 Log.d(TAG, "Extracted place from URL: $placeName")
-                val result = geocodeByGoogleApi(context, placeName, langCode)
+                val result = if (isChina) geocodeByAmapApi(context, placeName, langCode)
+                             else geocodeByGoogleApi(context, placeName, langCode)
                 if (result != null) return result
             }
             val qRegex = Regex("""[?&]q=([^&]+)""")
             qRegex.find(trimmed)?.let { match ->
                 val q = android.net.Uri.decode(match.groupValues[1]).replace("+", " ")
                 Log.d(TAG, "Extracted q= from URL: $q")
-                val result = geocodeByGoogleApi(context, q, langCode)
+                val result = if (isChina) geocodeByAmapApi(context, q, langCode)
+                             else geocodeByGoogleApi(context, q, langCode)
                 if (result != null) return result
             }
         }
@@ -231,7 +287,8 @@ object LocationRepository {
             .trim()
         Log.d(TAG, "Cleaned address: $cleaned")
 
-        val apiResult = geocodeByGoogleApi(context, cleaned, langCode)
+        val apiResult = if (isChina) geocodeByAmapApi(context, cleaned, langCode)
+                        else geocodeByGoogleApi(context, cleaned, langCode)
         if (apiResult != null) return apiResult
 
         return geocodeByName(context, cleaned, langCode)
@@ -345,6 +402,66 @@ object LocationRepository {
                 null
             } catch (e: Exception) {
                 Log.e(TAG, "Google Geocoding API failed", e)
+                null
+            }
+        }
+    }
+
+    private suspend fun reverseGeocodeByAmapApi(context: Context, lat: Double, lng: Double, langCode: String): GeoResult? {
+        return withContext(Dispatchers.IO) {
+            try {
+                if (amapWebKey.isEmpty()) return@withContext null
+                val (gcjLat, gcjLng) = wgs84ToGcj02(lat, lng)
+                val url = "https://restapi.amap.com/v3/geocode/regeo?output=json&location=$gcjLng,$gcjLat&key=$amapWebKey&radius=1000&extensions=base"
+                val response = URL(url).readText()
+                val json = JSONObject(response)
+                if (json.getString("status") == "1") {
+                    val regeoCode = json.getJSONObject("regeocode")
+                    val addressComponent = regeoCode.getJSONObject("addressComponent")
+                    var city = addressComponent.optString("city", "")
+                    if (city.isEmpty() || city == "[]") {
+                        city = addressComponent.optString("province", "")
+                    }
+                    val country = addressComponent.optString("country", "中国")
+                    GeoResult(lat, lng, city, country)
+                } else null
+            } catch (e: Exception) {
+                Log.e(TAG, "AMap reverse geocoding failed", e)
+                null
+            }
+        }
+    }
+
+    private suspend fun geocodeByAmapApi(context: Context, address: String, langCode: String): GeoResult? {
+        return withContext(Dispatchers.IO) {
+            try {
+                if (amapWebKey.isEmpty()) return@withContext null
+                val encoded = URLEncoder.encode(address, "UTF-8")
+                val url = "https://restapi.amap.com/v3/geocode/geo?output=json&address=$encoded&key=$amapWebKey"
+                Log.d(TAG, "AMap geocoding URL: $url")
+                val response = URL(url).readText()
+                Log.d(TAG, "AMap geocoding response: $response")
+                val json = JSONObject(response)
+                if (json.getString("status") == "1") {
+                    val geocodes = json.getJSONArray("geocodes")
+                    if (geocodes.length() > 0) {
+                        val geocode = geocodes.getJSONObject(0)
+                        val location = geocode.getString("location")
+                        val parts = location.split(",")
+                        if (parts.size == 2) {
+                            val lng = parts[0].toDoubleOrNull() ?: return@withContext null
+                            val lat = parts[1].toDoubleOrNull() ?: return@withContext null
+                            var city = geocode.optString("city", "")
+                            if (city.isEmpty() || city == "[]") {
+                                city = geocode.optString("province", "")
+                            }
+                            val country = geocode.optString("country", "中国")
+                            GeoResult(lat, lng, city, country)
+                        } else null
+                    } else null
+                } else null
+            } catch (e: Exception) {
+                Log.e(TAG, "AMap geocoding failed", e)
                 null
             }
         }
