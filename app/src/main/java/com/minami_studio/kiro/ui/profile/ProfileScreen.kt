@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.ui.window.Dialog
 import androidx.compose.runtime.*
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,7 +51,9 @@ import com.minami_studio.kiro.data.model.CustomCategory
 import com.minami_studio.kiro.data.model.PlaceCategory
 import com.minami_studio.kiro.data.repository.PhotoRepository
 import com.minami_studio.kiro.data.store.EntryStore
+import com.minami_studio.kiro.data.subscription.SubscriptionManager
 import com.minami_studio.kiro.ui.components.resolveIcon
+import com.minami_studio.kiro.ui.subscription.SubscriptionManagementSection
 import com.minami_studio.kiro.ui.theme.*
 import com.minami_studio.kiro.util.AppLanguage
 import com.minami_studio.kiro.util.LanguageManager
@@ -62,7 +65,9 @@ fun ProfileScreen(
     customCategories: List<CustomCategory>,
     language: AppLanguage,
     entryStore: EntryStore,
-    langManager: LanguageManager
+    langManager: LanguageManager,
+    subscriptionManager: SubscriptionManager? = null,
+    onShowRestore: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences("app_prefs", android.content.Context.MODE_PRIVATE) }
@@ -511,6 +516,21 @@ fun ProfileScreen(
                     icon = Icons.Default.Info,
                     label = langManager.s.aboutWander,
                     onClick = { showAboutSheet = true }
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // ========== 订阅管理卡片（仅付费用户显示） ==========
+        if (subscriptionManager != null) {
+            val subscriptionState by subscriptionManager.subscriptionState.collectAsState()
+            if (subscriptionState.isPaid) {
+                SubscriptionManagementSection(
+                    subscriptionManager = subscriptionManager,
+                    currentEntryCount = entries.size,
+                    strings = langManager.s,
+                    onShowRestore = onShowRestore
                 )
             }
         }

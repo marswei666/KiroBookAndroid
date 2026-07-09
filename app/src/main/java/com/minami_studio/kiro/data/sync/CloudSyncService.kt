@@ -46,8 +46,13 @@ class CloudSyncService(private val context: Context) {
     val userUUID: String
         get() {
             val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            prefs.getString(KEY_UUID, null)?.let { return it }
+            val existing = prefs.getString(KEY_UUID, null)
+            if (existing != null) {
+                Log.d(TAG, "UUID from prefs: $existing")
+                return existing
+            }
             val newUUID = UUID.randomUUID().toString()
+            Log.d(TAG, "Generated new UUID: $newUUID")
             prefs.edit().putString(KEY_UUID, newUUID).apply()
             return newUUID
         }

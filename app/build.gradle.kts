@@ -57,6 +57,18 @@ android {
         }
     }
 
+    flavorDimensions += "channel"
+    productFlavors {
+        create("direct") {
+            dimension = "channel"
+            // 个人网站下载渠道 —— 包含 Stripe 支付
+        }
+        create("play") {
+            dimension = "channel"
+            // Google Play 渠道 —— 包含 Google Play Billing
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
@@ -114,6 +126,12 @@ dependencies {
 
     implementation(libs.androidx.exifinterface)
     implementation(libs.androidx.documentfile)
+
+    // Stripe — 仅 direct 渠道
+    "directImplementation"("com.stripe:stripe-android:21.5.1")
+
+    // Google Play Billing — 仅 play 渠道
+    "playImplementation"("com.android.billingclient:billing-ktx:7.1.1")
 
     debugImplementation(libs.androidx.ui.tooling)
 }

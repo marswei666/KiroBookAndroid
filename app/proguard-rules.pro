@@ -13,3 +13,11 @@
 -dontwarn com.amap.api.**
 -dontwarn com.autonavi.**
 -dontwarn com.amap.ams.**
+
+# Stripe
+-keep class com.stripe.android.** { *; }
+-dontwarn com.stripe.android.**
+
+# Google Play Billing
+-keep class com.android.billingclient.** { *; }
+-dontwarn com.android.billingclient.**
