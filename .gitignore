@@ -17,3 +17,10 @@ app/release/
 
 # Claude
 .claude/
+
+# Backend (contains secrets)
+backend/
+.mimocode/
+
+# Local config
+local.properties
