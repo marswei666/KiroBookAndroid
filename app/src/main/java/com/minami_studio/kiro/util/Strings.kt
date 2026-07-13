@@ -152,6 +152,8 @@ class Strings(val lang: AppLanguage) {
     val subManageSubscription get() = pick("管理我的订阅", "Manage My Subscription", "サブスクリプション管理", "내 구독 관리", "管理我的訂閱")
     val subCancelSubscription get() = pick("取消订阅", "Cancel Subscription", "サブスクリプション解約", "구독 취소", "取消訂閱")
     val subCancelDesc get() = pick("跳转到 Stripe 客户门户管理您的订阅", "Go to Stripe Customer Portal to manage your subscription", "Stripeカスタマーポータルでサブスクリプションを管理", "Stripe 고객 포털에서 구독을 관리하세요", "跳轉到 Stripe 客戶門戶管理您的訂閱")
+    val subManagePlay get() = pick("管理订阅", "Manage Subscription", "サブスクリプション管理", "구독 관리", "管理訂閱")
+    val subManagePlayDesc get() = pick("跳转到 Google Play 管理您的订阅", "Go to Google Play to manage your subscription", "Google Playでサブスクリプションを管理", "Google Play에서 구독을 관리하세요", "跳轉到 Google Play 管理您的訂閱")
     val subAutoUpgrade get() = pick("自动升级", "Auto Upgrade", "自動アップグレード", "자동 업그레이드", "自動升級")
     fun subAutoUpgradeMsg(tier: String, price: String) = pick("检测到您的全球足迹已超出当前方案，即将为您升级至 $tier ($$price/月)", "Your global footprint has exceeded the current tier. Upgrading to $tier ($$price/month)", "現在のプランを超えました。$tier ($$price/月) にアップグレードします", "현재 플랜을 초과했습니다. $tier ($$price/월)로 업그레이드합니다", "偵測到您的全球足跡已超出當前方案，即將為您升級至 $tier ($$price/月)")
     fun subEntriesUsed(used: Int, max: Int): String {
@@ -160,4 +162,5 @@ class Strings(val lang: AppLanguage) {
     }
     val subLearnMore get() = pick("了解更多", "Learn More", "詳しく見る", "자세히 보기", "了解更多")
     val subPriceMonthly get() = pick("/月", "/month", "/月", "/월", "/月")
+    val networkTimeoutError get() = pick("腾讯云网络超时，弹出Stripe支付页面失败，请检查网络或关闭VPN后重试", "Network timeout. Failed to open Stripe payment page. Please check your network or disable VPN and try again", "ネットワークタイムアウト。Stripe決済ページの表示に失敗しました。ネットワークを確認するかVPNを無効にして再試行してください", "네트워크 시간 초과. Stripe 결제 페이지 열기 실패. 네트워크를 확인하거나 VPN을 끄고 다시 시도하세요", "騰訊雲網絡超時，彈出Stripe支付頁面失敗，請檢查網絡或關閉VPN後重試")
 }

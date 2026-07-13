@@ -76,17 +76,20 @@ fun SubscriptionManagementSection(
                     Text(state.email, fontSize = 13.sp, color = WanderMuted)
                 }
             }
-            if (subscriptionManager.isChannelDirect()) {
-                if (state.isPaid && activity != null) {
-                    SubscriptionActionRow(icon = Icons.Default.OpenInBrowser, label = strings.subCancelSubscription, subtitle = strings.subCancelDesc, onClick = {
+            if (state.isPaid && activity != null) {
+                SubscriptionActionRow(
+                    icon = Icons.Default.OpenInBrowser,
+                    label = if (subscriptionManager.isChannelDirect()) strings.subCancelSubscription else strings.subManagePlay,
+                    subtitle = if (subscriptionManager.isChannelDirect()) strings.subCancelDesc else strings.subManagePlayDesc,
+                    onClick = {
                         GlobalScope.launch { subscriptionManager.openManagementPortal(activity) }
-                    })
-                }
+                    }
+                )
+            }
+            if (subscriptionManager.isChannelDirect()) {
                 if (state.isActive) {
                     SubscriptionActionRow(icon = Icons.Default.LinkOff, label = strings.subUnlinkDevice, subtitle = strings.subUnlinkConfirm, onClick = { showUnlinkDialog = true })
                 }
-            }
-            if (subscriptionManager.isChannelDirect()) {
                 SubscriptionActionRow(icon = Icons.Default.Restore, label = strings.subRestore, onClick = onShowRestore)
             }
         }

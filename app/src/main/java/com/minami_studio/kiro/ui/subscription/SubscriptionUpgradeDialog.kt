@@ -90,7 +90,7 @@ private fun TierCard(tier: SubscriptionTier, isRecommended: Boolean, strings: St
         Row(modifier = Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("$${tier.priceUsd.toInt()}${strings.subPriceMonthly}", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = textColor)
+                    Text(String.format("$%.2f${strings.subPriceMonthly}", tier.priceUsd), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = textColor)
                     if (isRecommended) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Box(modifier = Modifier.clip(RoundedCornerShape(8.dp)).background(WanderAccent).padding(horizontal = 8.dp, vertical = 2.dp)) {

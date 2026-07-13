@@ -21,3 +21,9 @@
 # Google Play Billing
 -keep class com.android.billingclient.** { *; }
 -dontwarn com.android.billingclient.**
+
+# Keep logging for debugging
+-assumenosideeffects class android.util.Log {
+    public static int v(...);
+    public static int d(...);
+}

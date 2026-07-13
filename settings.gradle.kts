@@ -28,5 +28,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "WanderLogAndroid"
+rootProject.name = "KiroBookAndroid"
 include(":app")

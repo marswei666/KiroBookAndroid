@@ -36,8 +36,10 @@ import com.minami_studio.kiro.ui.subscription.RestoreSubscriptionDialog
 import com.minami_studio.kiro.ui.subscription.SubscriptionUpgradeDialog
 import com.minami_studio.kiro.ui.theme.*
 import com.minami_studio.kiro.util.LanguageManager
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 enum class Tab(val icon: ImageVector, val labelRes: String) {
     home(Icons.Default.Home, "tab_home"),
@@ -147,14 +149,26 @@ fun AppNavigation(onAppResume: ((() -> Unit) -> Unit) = {}) {
                         try {
                             val result = subscriptionManager.startPurchase(activity, tier)
                             Log.d("AppNavigation", "startPurchase result: $result")
+                            if (result.isSuccess) {
+                                withContext(Dispatchers.Main) {
+                                    showUpgradeDialog = false
+                                }
+                            } else {
+                                withContext(Dispatchers.Main) {
+                                    android.widget.Toast.makeText(context, langManager.s.networkTimeoutError, android.widget.Toast.LENGTH_LONG).show()
+                                }
+                            }
                         } catch (e: Exception) {
                             Log.e("AppNavigation", "Purchase failed: ${e.message}", e)
+                            withContext(Dispatchers.Main) {
+                                android.widget.Toast.makeText(context, langManager.s.networkTimeoutError, android.widget.Toast.LENGTH_LONG).show()
+                            }
                         }
                     }
                 } else {
                     Log.e("AppNavigation", "Activity is null!")
+                    showUpgradeDialog = false
                 }
-                showUpgradeDialog = false
             }, onDismiss = { showUpgradeDialog = false })
         }
         if (showRestoreDialog) {

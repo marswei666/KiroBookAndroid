@@ -7,21 +7,25 @@ import kotlinx.serialization.Serializable
 enum class SubscriptionTier(
     val id: String,
     val maxEntries: Int,
-    val priceUsd: Double,
+    private val priceDirect: Double,
+    private val pricePlay: Double,
     val stripePriceId: String,
     val playProductId: String
 ) {
-    FREE("free", if (BuildConfig.DEBUG) 3 else 30, 0.0, "", ""),
-    TIER_1("tier_1", if (BuildConfig.DEBUG) 6 else 60, 5.0, "price_tier1_monthly", "tier1_monthly"),
-    TIER_2("tier_2", if (BuildConfig.DEBUG) 9 else 90, 10.0, "price_tier2_monthly", "tier2_monthly"),
-    TIER_3("tier_3", Int.MAX_VALUE, 15.0, "price_tier3_monthly", "tier3_monthly");
+    FREE("free", if (BuildConfig.DEBUG) 3 else 30, 0.0, 0.0, "", ""),
+    TIER_1("tier_1", if (BuildConfig.DEBUG) 6 else 60, 5.0, 9.99, "price_tier1_monthly", "tier1_monthly"),
+    TIER_2("tier_2", if (BuildConfig.DEBUG) 9 else 90, 10.0, 14.99, "price_tier2_monthly", "tier2_monthly"),
+    TIER_3("tier_3", Int.MAX_VALUE, 15.0, 19.99, "price_tier3_monthly", "tier3_monthly");
+
+    val priceUsd: Double
+        get() = if (BuildConfig.FLAVOR == "play") pricePlay else priceDirect
 
     val displayName: String
         get() = when (this) {
             FREE -> "Free"
-            TIER_1 -> "$5/month"
-            TIER_2 -> "$10/month"
-            TIER_3 -> "$15/month"
+            TIER_1 -> if (BuildConfig.FLAVOR == "play") "$9.99/month" else "$5/month"
+            TIER_2 -> if (BuildConfig.FLAVOR == "play") "$14.99/month" else "$10/month"
+            TIER_3 -> if (BuildConfig.FLAVOR == "play") "$19.99/month" else "$15/month"
         }
 
     companion object {

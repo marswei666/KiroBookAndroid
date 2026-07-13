@@ -27,6 +27,8 @@ import java.util.concurrent.TimeUnit
 @Serializable data class UnbindResponse(val success: Boolean = false, val message: String = "")
 @Serializable data class PortalSessionResponse(val success: Boolean = false, val url: String = "", val message: String = "")
 @Serializable data class CheckoutSessionResponse(val success: Boolean = false, val url: String = "", val sessionId: String = "", val message: String = "")
+@Serializable data class RecordTransactionRequest(val userUUID: String, val source: String, val eventType: String, val tier: String = "free", val amount: Int = 0, val currency: String = "usd", val transactionId: String = "", val email: String = "", val mode: String = "")
+@Serializable data class RecordTransactionResponse(val success: Boolean = false, val message: String = "")
 
 class SubscriptionApiException(val errorCode: Int = -1, override val message: String) : Exception(message)
 
@@ -34,12 +36,14 @@ class SubscriptionApiService {
     companion object {
         private const val TAG = "SubscriptionApi"
         private const val BASE_URL = "https://wanderlog-stats-d4fnpamqed206c68-1445354193.ap-shanghai.app.tcloudbase.com"
-        private const val TIMEOUT_SECONDS = 30L
+        private const val DEFAULT_TIMEOUT = 8L
+        private const val CHECKOUT_TIMEOUT = 3L
         private val MODE = if (BuildConfig.DEBUG) "test" else "live"
     }
 
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true; isLenient = true }
-    private val client = OkHttpClient.Builder().connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS).writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS).readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS).build()
+    private val client = OkHttpClient.Builder().connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS).writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS).readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS).build()
+    private val checkoutClient = OkHttpClient.Builder().connectTimeout(CHECKOUT_TIMEOUT, TimeUnit.SECONDS).writeTimeout(CHECKOUT_TIMEOUT, TimeUnit.SECONDS).readTimeout(CHECKOUT_TIMEOUT, TimeUnit.SECONDS).build()
     private val JSON_MEDIA_TYPE = "application/json; charset=utf-8".toMediaType()
 
     suspend fun checkSubscription(uuid: String): CheckSubscriptionResponse {
@@ -70,15 +74,23 @@ class SubscriptionApiService {
     }
 
     suspend fun createCheckoutSession(uuid: String, tier: String): CheckoutSessionResponse {
-        return post("/createCheckoutSession", json.encodeToString(CheckoutSessionRequest(uuid, tier, MODE)))
+        return postWithClient("/createCheckoutSession", json.encodeToString(CheckoutSessionRequest(uuid, tier, MODE)), checkoutClient)
+    }
+
+    suspend fun recordTransaction(uuid: String, source: String, eventType: String, tier: String = "free", amount: Int = 0, currency: String = "usd", transactionId: String = "", email: String = ""): RecordTransactionResponse {
+        return post("/recordTransaction", json.encodeToString(RecordTransactionRequest(uuid, source, eventType, tier, amount, currency, transactionId, email, MODE)))
     }
 
     private suspend inline fun <reified T> post(path: String, bodyJson: String): T {
+        return postWithClient(path, bodyJson, client)
+    }
+
+    private suspend inline fun <reified T> postWithClient(path: String, bodyJson: String, httpClient: OkHttpClient): T {
         return withContext(Dispatchers.IO) {
             try {
                 val requestBody = bodyJson.toRequestBody(JSON_MEDIA_TYPE)
                 val request = Request.Builder().url("$BASE_URL$path").post(requestBody).header("Content-Type", "application/json").build()
-                val response = client.newCall(request).execute()
+                val response = httpClient.newCall(request).execute()
                 val responseBody = response.body?.string() ?: ""
                 if (!response.isSuccessful) throw SubscriptionApiException(errorCode = response.code, message = "HTTP ${response.code}: $responseBody")
                 json.decodeFromString<T>(responseBody)
