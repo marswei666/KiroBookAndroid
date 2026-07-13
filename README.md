@@ -7,11 +7,11 @@
 
 如果您在使用过程中遇到任何问题，或有任何功能建议，欢迎通过以下方式联系我： If you have any questions, feedback, or need technical support, please contact:
 
-Email: catz_1201@163.com, marswei20@gmail.com
+Email: catz_1201@163.com, marswei333@gmail.com
 
 X (Twitter): https://x.com/marswei666
 
-GitHub Issues: https://github.com/marswei666/WanderLogAndroid/issues
+GitHub Issues: https://github.com/marswei666/KiroBookAndroid/issues
 
 🔒 Privacy Policy / 隐私政策
 
