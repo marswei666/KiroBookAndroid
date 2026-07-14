@@ -24,3 +24,7 @@ backend/
 
 # Local config
 local.properties
+
+# Website assets
+image/
+website apk/

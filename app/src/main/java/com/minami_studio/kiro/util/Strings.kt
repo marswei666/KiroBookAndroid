@@ -163,4 +163,5 @@ class Strings(val lang: AppLanguage) {
     val subLearnMore get() = pick("了解更多", "Learn More", "詳しく見る", "자세히 보기", "了解更多")
     val subPriceMonthly get() = pick("/月", "/month", "/月", "/월", "/月")
     val networkTimeoutError get() = pick("腾讯云网络超时，弹出Stripe支付页面失败，请检查网络或关闭VPN后重试", "Network timeout. Failed to open Stripe payment page. Please check your network or disable VPN and try again", "ネットワークタイムアウト。Stripe決済ページの表示に失敗しました。ネットワークを確認するかVPNを無効にして再試行してください", "네트워크 시간 초과. Stripe 결제 페이지 열기 실패. 네트워크를 확인하거나 VPN을 끄고 다시 시도하세요", "騰訊雲網絡超時，彈出Stripe支付頁面失敗，請檢查網絡或關閉VPN後重試")
+    val playPurchaseFailed get() = pick("Google Play 支付失败，请稍后重试", "Google Play payment failed. Please try again later", "Google Play決済失敗。後でもう一度お試しください", "Google Play 결제 실패. 나중에 다시 시도하세요", "Google Play 支付失敗，請稍後重試")
 }

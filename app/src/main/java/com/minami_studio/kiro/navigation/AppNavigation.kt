@@ -155,13 +155,15 @@ fun AppNavigation(onAppResume: ((() -> Unit) -> Unit) = {}) {
                                 }
                             } else {
                                 withContext(Dispatchers.Main) {
-                                    android.widget.Toast.makeText(context, langManager.s.networkTimeoutError, android.widget.Toast.LENGTH_LONG).show()
+                                    val errorMsg = if (subscriptionManager.isChannelPlay()) langManager.s.playPurchaseFailed else langManager.s.networkTimeoutError
+                                    android.widget.Toast.makeText(context, errorMsg, android.widget.Toast.LENGTH_LONG).show()
                                 }
                             }
                         } catch (e: Exception) {
                             Log.e("AppNavigation", "Purchase failed: ${e.message}", e)
                             withContext(Dispatchers.Main) {
-                                android.widget.Toast.makeText(context, langManager.s.networkTimeoutError, android.widget.Toast.LENGTH_LONG).show()
+                                val errorMsg = if (subscriptionManager.isChannelPlay()) langManager.s.playPurchaseFailed else langManager.s.networkTimeoutError
+                                android.widget.Toast.makeText(context, errorMsg, android.widget.Toast.LENGTH_LONG).show()
                             }
                         }
                     }

@@ -27,3 +27,7 @@
     public static int v(...);
     public static int d(...);
 }
+-keepclassmembers class android.util.Log {
+    public static int e(...);
+    public static int w(...);
+}
