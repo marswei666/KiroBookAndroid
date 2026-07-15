@@ -66,8 +66,7 @@ fun ProfileScreen(
     language: AppLanguage,
     entryStore: EntryStore,
     langManager: LanguageManager,
-    subscriptionManager: SubscriptionManager? = null,
-    onShowRestore: () -> Unit = {}
+    subscriptionManager: SubscriptionManager? = null
 ) {
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences("app_prefs", android.content.Context.MODE_PRIVATE) }
@@ -529,8 +528,7 @@ fun ProfileScreen(
                 SubscriptionManagementSection(
                     subscriptionManager = subscriptionManager,
                     currentEntryCount = entries.size,
-                    strings = langManager.s,
-                    onShowRestore = onShowRestore
+                    strings = langManager.s
                 )
             }
         }

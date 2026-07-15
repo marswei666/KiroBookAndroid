@@ -30,8 +30,7 @@ import kotlinx.coroutines.launch
 fun SubscriptionManagementSection(
     subscriptionManager: SubscriptionManager,
     currentEntryCount: Int,
-    strings: Strings,
-    onShowRestore: () -> Unit
+    strings: Strings
 ) {
     val context = LocalContext.current
     val activity = context as? Activity
@@ -86,12 +85,7 @@ fun SubscriptionManagementSection(
                     }
                 )
             }
-            if (subscriptionManager.isChannelDirect()) {
-                if (state.isActive) {
-                    SubscriptionActionRow(icon = Icons.Default.LinkOff, label = strings.subUnlinkDevice, subtitle = strings.subUnlinkConfirm, onClick = { showUnlinkDialog = true })
-                }
-                SubscriptionActionRow(icon = Icons.Default.Restore, label = strings.subRestore, onClick = onShowRestore)
-            }
+
         }
     }
     if (showUnlinkDialog) {

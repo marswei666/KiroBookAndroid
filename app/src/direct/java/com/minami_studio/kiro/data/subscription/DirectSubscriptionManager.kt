@@ -162,9 +162,9 @@ class DirectSubscriptionManager : SubscriptionManager {
     override fun isChannelDirect(): Boolean = true
     override fun isChannelPlay(): Boolean = false
 
-    override suspend fun sendVerificationCode(email: String): SendCodeResponse {
+    override suspend fun sendVerificationCode(email: String, language: String): SendCodeResponse {
         val cloudSync = com.minami_studio.kiro.data.sync.CloudSyncService(appContext)
-        return api.sendVerificationCode(email, cloudSync.userUUID)
+        return api.sendVerificationCode(email, cloudSync.userUUID, language)
     }
 
     override suspend fun verifyAndBind(email: String, code: String): Result<SubscriptionState> {

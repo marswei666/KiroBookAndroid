@@ -273,7 +273,7 @@ class PlaySubscriptionManager : SubscriptionManager, PurchasesUpdatedListener {
     override fun isChannelDirect(): Boolean = false
     override fun isChannelPlay(): Boolean = true
 
-    override suspend fun sendVerificationCode(email: String): SendCodeResponse {
+    override suspend fun sendVerificationCode(email: String, language: String): SendCodeResponse {
         return SendCodeResponse(false, "Not supported on Play channel")
     }
 

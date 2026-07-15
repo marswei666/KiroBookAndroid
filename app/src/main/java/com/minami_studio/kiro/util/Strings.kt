@@ -131,7 +131,7 @@ class Strings(val lang: AppLanguage) {
         return pick("免费版 ($limit 条)", "Free ($limit entries)", "無料版 (${limit}件)", "무료 (${limit}개)", "免費版 ($limit 條)")
     }
     val subUpgrade get() = pick("升级订阅", "Upgrade", "アップグレード", "업그레이드", "升級訂閱")
-    val subRestore get() = pick("恢复订阅", "Restore Purchase", "購入を復元", "구매 복원", "恢復訂閱")
+    val subRestore get() = pick("新手机替代旧手机，恢复订阅", "New phone replacing old, restore subscription", "新しいスマホで復元", "새 폰으로 구독 복원", "新手機替代舊手機，恢復訂閱")
     val subManage get() = pick("管理订阅", "Manage Subscription", "サブスクリプション管理", "구독 관리", "管理訂閱")
     val subUnlinkDevice get() = pick("解绑当前设备", "Unlink This Device", "このデバイスのリンク解除", "이 기기 연결 해제", "解綁當前設備")
     val subUnlinkConfirm get() = pick("解绑后，本机的打卡上限将恢复至免费额度（30条），并释放一个设备名额。确认解绑？", "After unlinking, this device will revert to the free tier (30 entries) and a device slot will be freed. Confirm?", "リンク解除後、このデバイスは無料枠（30件）に戻り、デバイススロットが解放されます。確認しますか？", "연결 해제 후 이 기기는 무료 한도(30개)로 돌아가며 기기 슬롯이 해제됩니다. 확인하시겠습니까?", "解綁後，本機的打卡上限將恢復至免費額度（30條），並釋放一個設備名額。確認解綁？")
@@ -143,6 +143,9 @@ class Strings(val lang: AppLanguage) {
     val subCodePlaceholder get() = pick("4位验证码", "4-digit code", "4桁のコード", "4자리 코드", "4位驗證碼")
     val subRestoreSuccess get() = pick("订阅恢复成功！", "Subscription restored!", "サブスクリプション復元完了！", "구독 복원 완료!", "訂閱恢復成功！")
     val subRestoreFailed get() = pick("恢复失败，请检查邮箱和验证码", "Restore failed. Check email and code", "復元失敗。メールアドレスとコードを確認してください", "복원 실패. 이메일과 코드를 확인하세요", "恢復失敗，請檢查郵箱和驗證碼")
+    val subEmailNotFound get() = pick("该订阅邮件查询不到", "No subscription found for this email", "このメールアドレスのサブスクリプションが見つかりません", "이 이메일로 등록된 구독을 찾을 수 없습니다", "該訂閱郵件查詢不到")
+    val subInvalidEmail get() = pick("请输入正确的邮箱地址", "Please enter a valid email", "有効なメールアドレスを入力してください", "유효한 이메일을 입력하세요", "請輸入正確的郵箱地址")
+    val subInvalidCode get() = pick("请输入4位验证码", "Please enter 4-digit code", "4桁のコードを入力してください", "4자리 코드를 입력하세요", "請輸入4位驗證碼")
     val subDeviceLimit get() = pick("该邮箱绑定的设备数已达上限（3台）", "Device limit reached (3 devices max)", "デバイス上限に達しました（最大3台）", "기기 한도에 도달했습니다 (최대 3대)", "該郵箱綁定的設備數已達上限（3台）")
     val subForceUnlink get() = pick("强制解除旧设备", "Force Unlink Old Devices", "旧デバイスを強制解除", "이전 기기 강제 해제", "強制解除舊設備")
     val subForceUnlinkDesc get() = pick("我们将向您的支付邮箱发送验证码，输入后可清空所有旧设备绑定", "We'll send a verification code to your payment email. Enter it to clear all old device bindings", "支払いメールアドレスに認証コードを送信します。入力するとすべての旧デバイスのバインドがクリアされます", "결제 이메일로 인증 코드를 보내드립니다. 입력하면 모든 이전 기기 연결이 해제됩니다", "我們將向您的支付郵箱發送驗證碼，輸入後可清空所有舊設備綁定")
@@ -162,6 +165,7 @@ class Strings(val lang: AppLanguage) {
     }
     val subLearnMore get() = pick("了解更多", "Learn More", "詳しく見る", "자세히 보기", "了解更多")
     val subPriceMonthly get() = pick("/月", "/month", "/月", "/월", "/月")
+    val subNextRenewal get() = pick("下次续费", "Next renewal", "次回更新", "다음 갱신", "下次續費")
     val networkTimeoutError get() = pick("腾讯云网络超时，弹出Stripe支付页面失败，请检查网络或关闭VPN后重试", "Network timeout. Failed to open Stripe payment page. Please check your network or disable VPN and try again", "ネットワークタイムアウト。Stripe決済ページの表示に失敗しました。ネットワークを確認するかVPNを無効にして再試行してください", "네트워크 시간 초과. Stripe 결제 페이지 열기 실패. 네트워크를 확인하거나 VPN을 끄고 다시 시도하세요", "騰訊雲網絡超時，彈出Stripe支付頁面失敗，請檢查網絡或關閉VPN後重試")
     val playPurchaseFailed get() = pick("Google Play 支付失败，请稍后重试", "Google Play payment failed. Please try again later", "Google Play決済失敗。後でもう一度お試しください", "Google Play 결제 실패. 나중에 다시 시도하세요", "Google Play 支付失敗，請稍後重試")
 }

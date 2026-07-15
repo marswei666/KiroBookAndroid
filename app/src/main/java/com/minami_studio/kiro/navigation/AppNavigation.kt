@@ -92,7 +92,7 @@ fun AppNavigation(onAppResume: ((() -> Unit) -> Unit) = {}) {
                 CollectionScreen(entries = entries, customCategories = customCategories, language = language, langManager = langManager, entryStore = entryStore, onEntryClick = { navController.navigate("entry_detail/$it") })
             }
             composable("profile") {
-                ProfileScreen(entries = entries, customCategories = customCategories, language = language, entryStore = entryStore, langManager = langManager, subscriptionManager = subscriptionManager, onShowRestore = { showRestoreDialog = true })
+                ProfileScreen(entries = entries, customCategories = customCategories, language = language, entryStore = entryStore, langManager = langManager, subscriptionManager = subscriptionManager)
             }
             composable("entry_detail/{entryId}", arguments = listOf(navArgument("entryId") { type = NavType.StringType })) {
                 val entryId = it.arguments?.getString("entryId") ?: ""
@@ -141,7 +141,7 @@ fun AppNavigation(onAppResume: ((() -> Unit) -> Unit) = {}) {
             }
         }
         if (showUpgradeDialog) {
-            SubscriptionUpgradeDialog(currentEntryCount = entries.size, requiredTier = requiredTier, strings = langManager.s, onUpgrade = { tier ->
+            SubscriptionUpgradeDialog(currentEntryCount = entries.size, requiredTier = requiredTier, strings = langManager.s, onRestore = { showRestoreDialog = true }, onUpgrade = { tier ->
                 val activity = context as? android.app.Activity
                 Log.d("AppNavigation", "onUpgrade: activity=$activity, tier=${tier.id}")
                 if (activity != null) {
@@ -174,7 +174,13 @@ fun AppNavigation(onAppResume: ((() -> Unit) -> Unit) = {}) {
             }, onDismiss = { showUpgradeDialog = false })
         }
         if (showRestoreDialog) {
-            RestoreSubscriptionDialog(strings = langManager.s, onSendCode = { subscriptionManager.sendVerificationCode(it).success }, onVerify = { email, code -> subscriptionManager.verifyAndBind(email, code).isSuccess }, onForceUnbind = { subscriptionManager.forceUnbindByEmail(it).success }, onDismiss = { showRestoreDialog = false })
+            RestoreSubscriptionDialog(strings = langManager.s, onSendCode = {
+                val resp = subscriptionManager.sendVerificationCode(it, language.code)
+                if (resp.success) null else {
+                    val msg = resp.message
+                    if (msg.contains("No subscription found")) langManager.s.subEmailNotFound else msg
+                }
+            }, onVerify = { email, code -> subscriptionManager.verifyAndBind(email, code).isSuccess }, onForceUnbind = { subscriptionManager.forceUnbindByEmail(it).success }, onDismiss = { showRestoreDialog = false; showUpgradeDialog = false })
         }
     }
 }

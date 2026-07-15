@@ -24,7 +24,7 @@ interface SubscriptionManager {
 
     fun isChannelPlay(): Boolean
 
-    suspend fun sendVerificationCode(email: String): SendCodeResponse
+    suspend fun sendVerificationCode(email: String, language: String = "en"): SendCodeResponse
 
     suspend fun verifyAndBind(email: String, code: String): Result<SubscriptionState>
 

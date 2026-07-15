@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun RestoreSubscriptionDialog(
     strings: Strings,
-    onSendCode: suspend (String) -> Boolean,
+    onSendCode: suspend (String) -> String?,
     onVerify: suspend (String, String) -> Boolean,
     onForceUnbind: suspend (String) -> Boolean,
     onDismiss: () -> Unit
@@ -117,23 +117,32 @@ fun RestoreSubscriptionDialog(
                         Button(
                             onClick = {
                                 if (email.isBlank() || !email.contains("@")) {
-                                    error = "Please enter a valid email"
+                                    error = strings.subInvalidEmail
                                     return@Button
                                 }
                                 isLoading = true; error = null
                                 GlobalScope.launch {
-                                    val result = onSendCode(email)
-                                    isLoading = false
-                                    if (result) step = 1 else error = strings.subRestoreFailed
+                                    try {
+                                        val errorMsg = onSendCode(email)
+                                        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                                            isLoading = false
+                                            if (errorMsg == null) step = 1 else error = errorMsg
+                                        }
+                                    } catch (e: Exception) {
+                                        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                                            isLoading = false
+                                            error = e.message ?: strings.subRestoreFailed
+                                        }
+                                    }
                                 }
                             },
                             modifier = Modifier.fillMaxWidth().height(52.dp),
                             enabled = !isLoading && email.isNotBlank(),
                             shape = RoundedCornerShape(16.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = WanderInk)
+                            colors = ButtonDefaults.buttonColors(containerColor = WanderInk, contentColor = WanderCream)
                         ) {
                             if (isLoading) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = WanderCream, strokeWidth = 2.dp)
-                            else Text(strings.subSendCode, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                            else Text(strings.subSendCode, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, color = WanderCream)
                         }
                     }
                     step == 1 -> {
@@ -156,12 +165,21 @@ fun RestoreSubscriptionDialog(
                         Spacer(modifier = Modifier.height(24.dp))
                         Button(
                             onClick = {
-                                if (code.length != 4) { error = "Please enter 4-digit code"; return@Button }
+                                if (code.length != 4) { error = strings.subInvalidCode; return@Button }
                                 isLoading = true; error = null
                                 GlobalScope.launch {
-                                    val result = onVerify(email, code)
-                                    isLoading = false
-                                    if (result) success = true else { error = strings.subRestoreFailed; showForceUnbind = true }
+                                    try {
+                                        val result = onVerify(email, code)
+                                        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                                            isLoading = false
+                                            if (result) success = true else { error = strings.subRestoreFailed; showForceUnbind = true }
+                                        }
+                                    } catch (e: Exception) {
+                                        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                                            isLoading = false
+                                            error = e.message ?: strings.subRestoreFailed
+                                        }
+                                    }
                                 }
                             },
                             modifier = Modifier.fillMaxWidth().height(52.dp),
@@ -170,7 +188,7 @@ fun RestoreSubscriptionDialog(
                             colors = ButtonDefaults.buttonColors(containerColor = WanderInk)
                         ) {
                             if (isLoading) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = WanderCream, strokeWidth = 2.dp)
-                            else Text(strings.subVerify, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                            else Text(strings.subVerify, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, color = WanderCream)
                         }
                         if (showForceUnbind) {
                             Spacer(modifier = Modifier.height(16.dp))
@@ -198,12 +216,21 @@ fun RestoreSubscriptionDialog(
                         Spacer(modifier = Modifier.height(24.dp))
                         Button(
                             onClick = {
-                                if (code.length != 4) { error = "Please enter 4-digit code"; return@Button }
+                                if (code.length != 4) { error = strings.subInvalidCode; return@Button }
                                 isLoading = true; error = null
                                 GlobalScope.launch {
-                                    val result = onForceUnbind(email)
-                                    isLoading = false
-                                    if (result) { step = 0; code = ""; error = null } else error = strings.subRestoreFailed
+                                    try {
+                                        val result = onForceUnbind(email)
+                                        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                                            isLoading = false
+                                            if (result) { step = 0; code = ""; error = null } else error = strings.subRestoreFailed
+                                        }
+                                    } catch (e: Exception) {
+                                        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                                            isLoading = false
+                                            error = e.message ?: strings.subRestoreFailed
+                                        }
+                                    }
                                 }
                             },
                             modifier = Modifier.fillMaxWidth().height(52.dp),
@@ -212,7 +239,7 @@ fun RestoreSubscriptionDialog(
                             colors = ButtonDefaults.buttonColors(containerColor = Color.Red.copy(alpha = 0.8f))
                         ) {
                             if (isLoading) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
-                            else Text(strings.subForceUnlink, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                            else Text(strings.subForceUnlink, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
                         }
                     }
                 }

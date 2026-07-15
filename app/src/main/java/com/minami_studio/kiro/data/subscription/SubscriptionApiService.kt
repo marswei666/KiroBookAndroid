@@ -14,7 +14,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.concurrent.TimeUnit
 
 @Serializable data class CheckSubscriptionRequest(val userUUID: String, val mode: String = "test")
-@Serializable data class SendCodeRequest(val email: String, val userUUID: String, val mode: String = "test")
+@Serializable data class SendCodeRequest(val email: String, val userUUID: String, val mode: String = "test", val language: String = "en")
 @Serializable data class VerifyBindRequest(val email: String, val code: String, val userUUID: String, val mode: String = "test")
 @Serializable data class UnbindDeviceRequest(val userUUID: String, val mode: String = "test")
 @Serializable data class ForceUnbindRequest(val email: String, val mode: String = "test")
@@ -50,8 +50,8 @@ class SubscriptionApiService {
         return post("/checkSubscription", json.encodeToString(CheckSubscriptionRequest(uuid, MODE)))
     }
 
-    suspend fun sendVerificationCode(email: String, uuid: String): SendCodeResponse {
-        return post("/sendVerificationCode", json.encodeToString(SendCodeRequest(email, uuid, MODE)))
+    suspend fun sendVerificationCode(email: String, uuid: String, language: String = "en"): SendCodeResponse {
+        return post("/sendVerificationCode", json.encodeToString(SendCodeRequest(email, uuid, MODE, language)))
     }
 
     suspend fun verifyAndBind(email: String, code: String, uuid: String): VerifyBindResponse {

@@ -29,6 +29,7 @@ fun SubscriptionUpgradeDialog(
     requiredTier: SubscriptionTier,
     strings: Strings,
     onUpgrade: (SubscriptionTier) -> Unit,
+    onRestore: () -> Unit,
     onDismiss: () -> Unit
 ) {
     Dialog(
@@ -69,6 +70,8 @@ fun SubscriptionUpgradeDialog(
                     TierCard(tier = tier, isRecommended = tier == requiredTier, strings = strings, currentEntryCount = currentEntryCount, onClick = { onUpgrade(tier) })
                     Spacer(modifier = Modifier.height(12.dp))
                 }
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(strings.subRestore, fontSize = 14.sp, color = WanderAccent, fontWeight = FontWeight.Medium, modifier = Modifier.fillMaxWidth().clickable { onRestore() }, textAlign = TextAlign.Center)
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
