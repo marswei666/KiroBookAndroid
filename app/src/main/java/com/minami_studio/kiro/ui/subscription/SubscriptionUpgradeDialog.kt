@@ -47,7 +47,9 @@ fun SubscriptionUpgradeDialog(
                     Spacer(modifier = Modifier.height(48.dp))
                 }
                 Spacer(modifier = Modifier.height(32.dp))
-                Icon(Icons.Default.Star, null, tint = WanderAccent, modifier = Modifier.size(48.dp))
+                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    Icon(Icons.Default.Star, null, tint = WanderAccent, modifier = Modifier.size(48.dp))
+                }
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(strings.subUpgradeTitle, fontSize = 24.sp, fontFamily = FontFamily.Serif, color = WanderInk)
                 Spacer(modifier = Modifier.height(8.dp))
@@ -67,8 +69,6 @@ fun SubscriptionUpgradeDialog(
                     TierCard(tier = tier, isRecommended = tier == requiredTier, strings = strings, currentEntryCount = currentEntryCount, onClick = { onUpgrade(tier) })
                     Spacer(modifier = Modifier.height(12.dp))
                 }
-                Spacer(modifier = Modifier.height(48.dp))
-                Text(strings.subRestore, fontSize = 14.sp, color = WanderAccent, fontWeight = FontWeight.Medium, modifier = Modifier.fillMaxWidth().clickable { }, textAlign = TextAlign.Center)
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }

@@ -14,6 +14,8 @@ local.properties
 
 # Release artifacts
 app/release/
+app/direct/release/
+app/play/release/
 
 # Claude
 .claude/
