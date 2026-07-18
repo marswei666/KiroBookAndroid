@@ -26,16 +26,22 @@ object TranslationService {
         "zh-Hans" to "zh-CN",
         "zh-Hant" to "zh-TW",
         "en"      to "en",
+        "es"      to "es",
+        "fr"      to "fr",
         "ja"      to "ja",
-        "ko"      to "ko"
+        "ko"      to "ko",
+        "ar"      to "ar"
     )
 
     private val langToBaidu = mapOf(
         "zh-Hans" to "zh",
         "zh-Hant" to "cht",
         "en"      to "en",
+        "es"      to "spa",
+        "fr"      to "fra",
         "ja"      to "jp",
-        "ko"      to "kor"
+        "ko"      to "kor",
+        "ar"      to "ara"
     )
 
     suspend fun translateToAllLanguages(

@@ -28,6 +28,14 @@ enum class Mood(val label: String) {
             loved -> "Loved"; relaxed -> "Relaxed"; amazed -> "Amazed"
             neutral -> "Neutral"; tired -> "Tired"
         }
+        "es" -> when (this) {
+            loved -> "Me encantó"; relaxed -> "Relajado"; amazed -> "Asombrado"
+            neutral -> "Neutral"; tired -> "Cansado"
+        }
+        "fr" -> when (this) {
+            loved -> "Adoré"; relaxed -> "Détendu"; amazed -> "Émerveillé"
+            neutral -> "Neutre"; tired -> "Fatigué"
+        }
         "ja" -> when (this) {
             loved -> "大好き"; relaxed -> "癒し"; amazed -> "感動"
             neutral -> "普通"; tired -> "疲れた"
@@ -39,6 +47,10 @@ enum class Mood(val label: String) {
         "zh-Hant" -> when (this) {
             loved -> "很愛"; relaxed -> "療癒"; amazed -> "震撼"
             neutral -> "一般"; tired -> "疲憊"
+        }
+        "ar" -> when (this) {
+            loved -> "أحببته"; relaxed -> "مرتاح"; amazed -> "مندهش"
+            neutral -> "محايد"; tired -> "متعب"
         }
         else -> label
     }

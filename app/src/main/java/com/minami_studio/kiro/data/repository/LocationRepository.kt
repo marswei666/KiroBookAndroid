@@ -72,8 +72,11 @@ object LocationRepository {
     private fun googleLangCode(appLangCode: String): String = when (appLangCode) {
         "zh-Hans" -> "zh-CN"
         "zh-Hant" -> "zh-TW"
+        "es" -> "es"
+        "fr" -> "fr"
         "ja" -> "ja"
         "ko" -> "ko"
+        "ar" -> "ar"
         else -> "en"
     }
 

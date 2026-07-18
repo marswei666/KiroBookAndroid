@@ -36,6 +36,16 @@ enum class PlaceCategory(val chineseName: String, val icon: String) {
             bar -> "Bar"; gallery -> "Gallery"; selectShop -> "Select Shop"
             restaurant -> "Restaurant"; other -> "Other"
         }
+        "es" -> when (this) {
+            cafe -> "Café"; museum -> "Museo"; bookstore -> "Librería"
+            bar -> "Bar"; gallery -> "Galería"; selectShop -> "Tienda selecta"
+            restaurant -> "Restaurante"; other -> "Otro"
+        }
+        "fr" -> when (this) {
+            cafe -> "Café"; museum -> "Musée"; bookstore -> "Librairie"
+            bar -> "Bar"; gallery -> "Galerie"; selectShop -> "Boutique sélectionnée"
+            restaurant -> "Restaurant"; other -> "Autre"
+        }
         "ja" -> when (this) {
             cafe -> "カフェ"; museum -> "博物館"; bookstore -> "本屋"
             bar -> "バー"; gallery -> "ギャラリー"; selectShop -> "セレクトショップ"
@@ -50,6 +60,11 @@ enum class PlaceCategory(val chineseName: String, val icon: String) {
             cafe -> "咖啡館"; museum -> "博物館"; bookstore -> "書店"
             bar -> "酒吧"; gallery -> "展覽 / 美術館"; selectShop -> "買手店"
             restaurant -> "餐廳"; other -> "其他"
+        }
+        "ar" -> when (this) {
+            cafe -> "مقهى"; museum -> "متحف"; bookstore -> "مكتبة"
+            bar -> "بار"; gallery -> "معرض"; selectShop -> "متجر مختار"
+            restaurant -> "مطعم"; other -> "أخرى"
         }
         else -> chineseName
     }

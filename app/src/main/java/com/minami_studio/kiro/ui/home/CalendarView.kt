@@ -143,7 +143,12 @@ private fun MonthHeader(
         }
         Spacer(modifier = Modifier.weight(1f))
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            if (language == AppLanguage.english) {
+            if (language == AppLanguage.english || language == AppLanguage.spanish || language == AppLanguage.french) {
+                val locale = when (language) {
+                    AppLanguage.spanish -> Locale("es")
+                    AppLanguage.french -> Locale.FRENCH
+                    else -> Locale.ENGLISH
+                }
                 Text(
                     text = displayMonth.year.toString(),
                     fontSize = 12.sp,
@@ -151,7 +156,7 @@ private fun MonthHeader(
                     color = WanderMuted
                 )
                 Text(
-                    text = displayMonth.month.getDisplayName(TextStyle.FULL, Locale.ENGLISH),
+                    text = displayMonth.month.getDisplayName(TextStyle.FULL, locale),
                     fontSize = 22.sp,
                     fontFamily = Georgia,
                     color = WanderInk
@@ -162,6 +167,7 @@ private fun MonthHeader(
                     AppLanguage.traditionalChinese -> Locale("zh", "TW")
                     AppLanguage.japanese -> Locale("ja", "JP")
                     AppLanguage.korean -> Locale("ko", "KR")
+                    AppLanguage.arabic -> Locale("ar")
                     else -> Locale.ENGLISH
                 }
                 Text(

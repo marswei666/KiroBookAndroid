@@ -758,6 +758,13 @@ fun ProfileScreen(
                         AboutRow(icon = Icons.Default.Lock, text = langManager.s.aboutPrivacy1)
                         AboutRow(icon = Icons.Default.WifiOff, text = langManager.s.aboutPrivacy2)
                         AboutRow(icon = Icons.Default.PersonOff, text = langManager.s.aboutPrivacy3)
+                        AboutRow(
+                            icon = Icons.Default.Language,
+                            text = "marswei666.com",
+                            modifier = Modifier.clickable {
+                                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://marswei666.com/index.html")))
+                            }
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(48.dp))
@@ -768,8 +775,9 @@ fun ProfileScreen(
 }
 
 @Composable
-private fun AboutRow(icon: ImageVector, text: String) {
+private fun AboutRow(icon: ImageVector, text: String, modifier: Modifier = Modifier) {
     Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
