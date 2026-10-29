@@ -52,7 +52,11 @@ class PlaySubscriptionManager : SubscriptionManager, PurchasesUpdatedListener {
     private fun initBillingClient() {
         billingClient = BillingClient.newBuilder(appContext)
             .setListener(this)
-            .enablePendingPurchases()
+            .enablePendingPurchases(
+                PendingPurchasesParams.newBuilder()
+                    .enableOneTimeProducts()
+                    .build()
+            )
             .build()
 
         billingClient?.startConnection(object : BillingClientStateListener {

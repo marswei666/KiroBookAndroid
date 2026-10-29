@@ -16,15 +16,15 @@ val localProperties = Properties().apply {
 
 android {
     namespace = "com.minami_studio.kiro"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         manifestPlaceholders += mapOf()
         applicationId = "com.minami_studio.kiro"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 17
-        versionName = "1.1.3"
+        targetSdk = 36
+        versionCode = 20
+        versionName = "1.2.0"
 
         // Google Maps API Key — 从 local.properties 读取
         val mapsApiKey = localProperties.getProperty("MAPS_API_KEY") ?: ""
@@ -131,7 +131,7 @@ dependencies {
     "directImplementation"("com.stripe:stripe-android:21.5.1")
 
     // Google Play Billing — 仅 play 渠道
-    "playImplementation"("com.android.billingclient:billing-ktx:7.1.1")
+    "playImplementation"("com.android.billingclient:billing-ktx:8.0.0")
 
     debugImplementation(libs.androidx.ui.tooling)
 }
